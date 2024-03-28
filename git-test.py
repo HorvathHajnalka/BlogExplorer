@@ -1,2 +1,2 @@
-print("hello")
-print("Hajni")
+print("Hello")
+print("Judit")
