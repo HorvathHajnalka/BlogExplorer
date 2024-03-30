@@ -12,47 +12,47 @@ namespace BlogExplorer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class TopicTypesController : ControllerBase
     {
         private readonly DataContext _context;
 
-        public UsersController(DataContext context)
+        public TopicTypesController(DataContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/TopicTypes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<TopicType>>> GetTopicTypes()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.TopicTypes.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: api/TopicTypes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<TopicType>> GetTopicType(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var topicType = await _context.TopicTypes.FindAsync(id);
 
-            if (user == null)
+            if (topicType == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return topicType;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/TopicTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutTopicType(int id, TopicType topicType)
         {
-            if (id != user.Id)
+            if (id != topicType.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(topicType).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace BlogExplorer.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!TopicTypeExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace BlogExplorer.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: api/TopicTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<TopicType>> PostTopicType(TopicType topicType)
         {
-            _context.Users.Add(user);
+            _context.TopicTypes.Add(topicType);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return CreatedAtAction("GetTopicType", new { id = topicType.Id }, topicType);
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/TopicTypes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteTopicType(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var topicType = await _context.TopicTypes.FindAsync(id);
+            if (topicType == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
+            _context.TopicTypes.Remove(topicType);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool UserExists(int id)
+        private bool TopicTypeExists(int id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.TopicTypes.Any(e => e.Id == id);
         }
     }
 }

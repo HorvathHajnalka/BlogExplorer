@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlogExplorer
 {
-    public class users
+    public class User
     {
 
         [Key]
