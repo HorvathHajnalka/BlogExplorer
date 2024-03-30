@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogExplorer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240329215011_InitialCreate")]
+    [Migration("20240330072033_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,7 +24,7 @@ namespace BlogExplorer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BlogExplorer.User", b =>
+            modelBuilder.Entity("BlogExplorer.users", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,7 +49,7 @@ namespace BlogExplorer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("users");
                 });
 #pragma warning restore 612, 618
         }

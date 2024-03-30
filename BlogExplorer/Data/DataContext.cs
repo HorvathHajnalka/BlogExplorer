@@ -6,7 +6,7 @@ namespace BlogExplorer.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-        public DbSet<User> User { get; set; }
+        public DbSet<users> users { get; set; }
 
 
     }

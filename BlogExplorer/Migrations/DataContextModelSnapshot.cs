@@ -21,7 +21,7 @@ namespace BlogExplorer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BlogExplorer.User", b =>
+            modelBuilder.Entity("BlogExplorer.users", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,7 +46,7 @@ namespace BlogExplorer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("users");
                 });
 #pragma warning restore 612, 618
         }

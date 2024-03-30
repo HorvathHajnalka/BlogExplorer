@@ -2,7 +2,7 @@
 
 namespace BlogExplorer
 {
-    public class User
+    public class users
     {
 
         [Key]
