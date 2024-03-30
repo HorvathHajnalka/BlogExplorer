@@ -3,7 +3,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-
 import { AppComponent } from './app.component';
 import { UserComponent } from './user/user.component';
 import { TopicComponent } from './topic/topic.component';
@@ -22,7 +21,7 @@ import { BlogApiService } from './blog-api.service';
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [BlogApiService],
   bootstrap: [AppComponent]
