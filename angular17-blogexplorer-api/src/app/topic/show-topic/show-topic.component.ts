@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BlogApiService } from '../../blog-api.service';
-import { HttpClientModule } from '@angular/common/http'; 
+import { CommonModule } from '@angular/common'; 
 
 @Component({
   selector: 'app-show-topic',
   standalone: true,
-  imports: [HttpClientModule],
+  imports: [CommonModule],
   templateUrl: './show-topic.component.html',
   styleUrls: ['./show-topic.component.css']
 })
