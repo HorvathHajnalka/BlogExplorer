@@ -1,6 +1,8 @@
 # BlogExplorer
 A platform for blog management and interaction.
+
 Instrukciók friss Windows-ra:
+
 Letölteni:
     •	Visual Studio 2022 legfrissebb verziója az alábbi csomagokkal:
         o	ASP.NET and web development
@@ -14,6 +16,14 @@ Letölteni:
 Windows parancssoron keresztül telepíteni:
     •	npm install -g typescript
     •	npm install -g @angular/cli
+Visual Studión belül:
+    NuGet package-ek:
+        - Microsoft.EntityFrameworkCore.SqlServer
+        - Microsoft.EntityFrameworkCore.Tools
+        - Microsoft.EntityFrameworkCore.Design
+        - Microsoft.VisualStudio.Web.CodeGeneration.Design
+        - Microsoft.AspNet.WebApi.Core
+
 Működtetéshez:
 git repository klónozását követően:
     szerveroldal:
