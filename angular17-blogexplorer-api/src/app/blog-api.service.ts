@@ -15,6 +15,7 @@ export class BlogApiService {
   constructor(private http:HttpClient) { }
 
   getTopicList():Observable<any[]>{
+    console.log(this.http.get<any>(this.blogAPIUrl + '/Topics'));
     return this.http.get<any>(this.blogAPIUrl + '/Topics');
   }
 }
