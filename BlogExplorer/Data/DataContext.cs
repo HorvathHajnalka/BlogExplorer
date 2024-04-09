@@ -1,10 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.Linq;
 
 namespace BlogExplorer.Data
 {
     public class DataContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+        private readonly IConfiguration _configuration;
+
+        public DataContext(DbContextOptions<DataContext> options, IConfiguration configuration) : base(options)
+        {
+            _configuration = configuration;
+        }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Topic> Topics { get; set; }
@@ -12,17 +19,47 @@ namespace BlogExplorer.Data
         public DbSet<TopicType> TopicTypes { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
-        // fix issues with double primary key in favorite topic
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<FavoriteTopic>().HasKey(ft => new { ft.UserId, ft.TopicId });
+
+            // Seed initial data
+            modelBuilder.Entity<User>().HasData(
+                new User { Id = 1, Username = "example_user", Name = "Example User", Password = "example_password" }
+                // Add additional users here
+            );
+
             base.OnModelCreating(modelBuilder);
+        }
 
-            // Composite key configuration for FavoriteTopics
-            modelBuilder.Entity<FavoriteTopic>()
-                .HasKey(ft => new { ft.UserId, ft.TopicId });
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
+            }
+        }
 
-            // Other model configurations can go here
+        public void EnsureDatabaseSeeded()
+        {
+            if (!Users.Any())
+            {
+                SeedUsers();
+            }
+
+            // További ellenőrzések és adatfeltöltések más entitásokhoz
+        }
+
+        private void SeedUsers()
+        {
+            var users = new List<User>
+            {
+                new User { Id = 1, Username = "example_user", Name = "Example User", Password = "example_password" }
+                // További felhasználók hozzáadása
+            };
+
+            Users.AddRange(users);
+            SaveChanges();
         }
     }
 }
