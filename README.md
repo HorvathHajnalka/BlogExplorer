@@ -2,13 +2,13 @@
 
 A platform for blog management and interaction.
 
-Below you will find comprehensive instructions to get you started on a fresh Windows environment.
+Below you will find comprehensive instructions to get you started on Windows environment.
 
 ## Prerequisites
 
 Before you begin, ensure you have the following software installed on your system:
 
-- **Visual Studio 2022** (latest version) with the following workloads:
+- **Visual Studio** (latest version) with the following workloads:
   - ASP.NET and web development
   - Azure development
   - Node.js development
