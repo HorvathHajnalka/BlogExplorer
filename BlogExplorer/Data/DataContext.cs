@@ -10,6 +10,7 @@ namespace BlogExplorer.Data
 
         public DataContext(DbContextOptions<DataContext> options, IConfiguration configuration) : base(options)
         {
+            Database.EnsureCreated();
             _configuration = configuration;
         }
 
