@@ -1,7 +1,7 @@
 # Blog Explorer Platform README
 
 ## Overview
-This prototype WebApplication system is designed for managing blog posts, enabling users to interact with topics and comments within a server-client architecture, communicating through an API. The system has features such as database integration, authentication, and real-time communication.
+This prototype WebApplication is designed for managing blog posts, enabling users to interact with topics and comments within a server-client architecture, communicating through an API. The system has features such as database integration, authentication, and real-time communication.
 
 ## Technologies Used
 - **Programming Language:** C# .NET
