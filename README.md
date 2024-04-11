@@ -83,7 +83,7 @@ To get your environment up and running, follow these steps:
    ```
 4. Navigate to the Angular project directory:
    ```
-   cd .\angular17-blogexplorer-api
+   cd .\Client
    ```
 5. Start the Angular development server:
    ```
