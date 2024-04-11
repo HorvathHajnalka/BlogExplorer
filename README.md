@@ -51,7 +51,11 @@ To get your environment up and running, follow these steps:
 1. Clone the git repository to your local machine.
 2. Open Visual Studio and navigate to your local repository.
 3. Open the `.sln` file to load the project.
-4. Run the project to start the server side of the platform.
+4. Before running the project, it's crucial to update the database. In Visual Studio, open the **Package Manager Console** and execute the following command for database migration:
+   ```
+   dotnet ef database update
+   ```
+5. Now, run the project to start the server side of the platform.
 
 ### Client Side
 
@@ -69,8 +73,12 @@ To get your environment up and running, follow these steps:
    ```
    ng serve --open
    ```
-   This command compiles the application, launches the development server, and opens the application in your default web browser.
+  This command compiles the application on port 4200, launches the development server, and opens the application in your default web browser. Please note that the application is configured to only work on port 4200.
 
 ## Conclusion
 
 You should now have the Blog Explorer Platform running locally on your machine.
+
+
+
+
