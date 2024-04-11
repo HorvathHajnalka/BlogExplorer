@@ -89,7 +89,7 @@ To get your environment up and running, follow these steps:
    ```
    ng serve --open
    ```
-  This command compiles the application on port 4200, launches the development server, and opens the application in your default web browser. Please note that the application is configured to only work on port 4200.
+  This command compiles the client on port 4200, launches the development server on port 7111, and opens the application in your default web browser. Please note that the application is configured to only work on port 4200 and 7111.
 
 ## Conclusion
 
