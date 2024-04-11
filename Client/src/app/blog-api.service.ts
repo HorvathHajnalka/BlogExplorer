@@ -19,7 +19,7 @@ export class BlogApiService {
   // Returns an Observable of any type (should ideally be typed to a model/interface representing a topic).
   getTopicList(): Observable<any[]> {
     // Debugging line, logs the Observable to the console (might not display expected data directly, since Observables are lazy).
-    console.log(this.http.get<any>(this.blogAPIUrl + '/Topics'));
+    //console.log(this.http.get<any>(this.blogAPIUrl + '/Topics'));
 
     // Makes a GET request to the specified URL and returns the Observable.
     // This Observable will emit the data once the HTTP request is successfully completed.
