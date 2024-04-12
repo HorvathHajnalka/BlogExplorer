@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BlogApiService } from '../../blog-api.service';
 import { CommonModule } from '@angular/common'; 
+import { AddEditTopicComponent } from '../add-edit-topic/add-edit-topic.component';
 
 // Decorator that marks a class as an Angular component, providing template and style information.
 @Component({
   selector: 'app-show-topic', // The CSS selector that identifies this component in a template
   standalone: true, // Marks this component as standalone, meaning it can be imported without needing to be declared in a module.
-  imports: [CommonModule], // Imports CommonModule for common directives like ngIf, ngFor, etc.
+  imports: [CommonModule, AddEditTopicComponent], // Imports CommonModule for common directives like ngIf, ngFor, etc.
   templateUrl: './show-topic.component.html', // Location of the component's template file.
   styleUrls: ['./show-topic.component.css'] // Location of the component's private CSS styles.
 })
@@ -31,8 +32,29 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
     this.refreshTopicTypesMap();
   }
 
+  // Variables (properties)
+  modalTitle:string = '';
+  activateAddEditTopicComponent:boolean = false;
+  topic:any;
+
+  modalAdd() {
+    this.topic = {
+      topicId: 0,
+      name: null,
+      topicTypeId: 0,
+      description: null
+    }
+    this.modalTitle = "Add New Topic";
+    this.activateAddEditTopicComponent = true;
+  }
+
+  modalClose() {
+    this.activateAddEditTopicComponent = false;
+    this.topicList$ = this.service.getTopicList();
+  }
+
   refreshTopicTypesMap() {
-    this.service.getTopicTypeList().subscribe(data =>{
+    this.service.getTopicTypeList().subscribe(data => {
       this.topicTypesList = data;
 
       for(let i = 0; i < data.length; i++){

@@ -1,1 +1,28 @@
-<p>add-edit-topic works!</p>
+<form>
+
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" [(ngModel)]="name" name="name">  
+    </div>
+
+    <div class="mb-3">
+        <label for="topicTypeId" class="form-label">Topic Type</label>
+        <select class="form-control" name="topicTypeId" id="topicTypeId" [(ngModel)]="topicTypeId" *ngIf ="topic.topicId==0">
+            <option *ngFor="let type of topicTypesList$|async" [value]="type.topicTypeId | number">{{type.name}}</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <input type="text" class="form-control" [(ngModel)]="description" name="description">  
+    </div>
+
+    <button (click)="addTopic()" *ngIf="topic.topicId==0" class="btn btn-primary">
+        Add
+    </button>
+
+    <button (click)="updateTopic()" *ngIf="topic.topicId!=0" class="btn btn-primary">
+        Update
+    </button>
+        
+</form>

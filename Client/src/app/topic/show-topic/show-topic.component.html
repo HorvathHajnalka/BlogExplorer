@@ -1,5 +1,13 @@
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-secondary float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  <!-- Add new Topic trigger modal -->
+  <button type="button" class="btn btn-primary float-end m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+  (click)="modalAdd()"
+  >
+    Add New Topic
+  </button>
+
+  
+  <!-- Button trigger modal -->
+<button type="button" class="btn btn-secondary float-end m-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Show Topic Types
   </button>
 
@@ -24,10 +32,24 @@
     </tbody>
 </table>
 
+<div class="alert alert-success" role="alert" id="add-success-alert">
+    Topic successfully added!
+</div>
+
+<div class="alert alert-success" role="alert"  id="update-success-alert">
+    Topic successfully updated!
+</div>
+
+<div class="alert alert-success" role="alert"  id="delete-success-alert">
+    Topic successfully deleted!
+</div>
+
+
+
 
 
   
-  <!-- Modal -->
+  <!-- Show Topic Types Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -37,6 +59,26 @@
         </div>
         <div class="modal-body">
           <p *ngFor="let type of topicTypesList$|async">{{type.topicTypeId}} - {{type.name}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  
+  <!-- Add or Edit new Topic Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">{{modalTitle}}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="modalClose()" id="add-edit-modal-close"
+          ></button>
+        </div>
+        <div class="modal-body">
+            <app-add-edit-topic [topic]="topic" *ngIf="activateAddEditTopicComponent"></app-add-edit-topic>
         </div>
       </div>
     </div>
