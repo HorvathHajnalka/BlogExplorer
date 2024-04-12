@@ -62,7 +62,29 @@ export class AddEditTopicComponent {
   }
 
   updateTopic(){
+    var topic = {
+      topicId:this.topicId,
+      name:this.name,
+      topicTypeId: +this.topicTypeId,
+      description:this.description 
+    }
+    var topicId:number = this.topicId;
+    this.service.updateTopic(topicId, topic).subscribe(res => {
+      var closeModalBtn = document.getElementById('add-edit-modal-close');
+      if(closeModalBtn) {
+        closeModalBtn.click();
+      }
 
+      var showUpdateSuccess = document.getElementById('update-success-alert');
+      if(showUpdateSuccess) {
+        showUpdateSuccess.style.display = "block";
+      }
+      setTimeout(function(){
+        if(showUpdateSuccess) {
+          showUpdateSuccess.style.display = "none"
+        }
+      }, 4000);
+    })
   }
 
 }

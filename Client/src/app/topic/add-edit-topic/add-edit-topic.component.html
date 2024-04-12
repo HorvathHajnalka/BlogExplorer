@@ -6,8 +6,8 @@
     </div>
 
     <div class="mb-3">
-        <label for="topicTypeId" class="form-label">Topic Type</label>
-        <select class="form-control" name="topicTypeId" id="topicTypeId" [(ngModel)]="topicTypeId" *ngIf ="topic.topicId==0">
+        <label for="topicTypeId" class="form-label">Topic Type</label> 
+        <select class="form-control" name="topicTypeId" id="topicTypeId" [(ngModel)]="topicTypeId">
             <option *ngFor="let type of topicTypesList$|async" [value]="type.topicTypeId | number">{{type.name}}</option>
         </select>
     </div>

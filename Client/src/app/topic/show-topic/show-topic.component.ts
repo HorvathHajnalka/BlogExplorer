@@ -48,6 +48,35 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
     this.activateAddEditTopicComponent = true;
   }
 
+  modalEdit(item:any){
+    this.topic = item;
+    this.modalTitle = "Edit Topic";
+    this.activateAddEditTopicComponent = true;
+
+  }
+
+  delete(item:any){
+    if(confirm(`Are you sure you want to delete topic ${item.name}`)){
+      this.service.deleteTopic(item.topicId).subscribe(res => {
+    
+          var closeModalBtn = document.getElementById('add-edit-modal-close');
+          if(closeModalBtn) {
+            closeModalBtn.click();
+          }
+          var showDeleteSuccess = document.getElementById('delete-success-alert');
+          if(showDeleteSuccess) {
+            showDeleteSuccess.style.display = "block";
+          }
+          setTimeout(function(){
+            if(showDeleteSuccess) {
+              showDeleteSuccess.style.display = "none"
+            }
+          }, 4000);
+          this.topicList$ = this.service.getTopicList();
+      })
+    }
+  }
+
   modalClose() {
     this.activateAddEditTopicComponent = false;
     this.topicList$ = this.service.getTopicList();
