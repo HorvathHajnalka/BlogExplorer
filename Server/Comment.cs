@@ -7,20 +7,20 @@ namespace BlogExplorer
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int CommentId { get; set; }
 
-        [Column("user_id")]
+        [ForeignKey("User")]
         public int UserId { get; set; }
-        [ForeignKey("UserId")]
-        public User User { get; set; }
+        
+        public User? User { get; set; }
 
-        [Column("topic_id")]
+        [ForeignKey("Topic")]
         public int TopicId { get; set; }
-        [ForeignKey("TopicId")]
-        public Topic Topic { get; set; }
+        
+        public Topic? Topic { get; set; }
 
         [MaxLength(255)]
-        public string Body { get; set; }
+        public string Body { get; set; } = string.Empty;
 
         public DateTime Timestamp { get; set; }
     }

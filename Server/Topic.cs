@@ -7,21 +7,21 @@ namespace BlogExplorer
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int TopicId { get; set; }
 
         [MaxLength(255)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        [Column("type_id")]
-        public int TypeId { get; set; }
-        [ForeignKey("TypeId")]
-        public TopicType TopicType { get; set; }
+        [ForeignKey("TopicType")]
+        public int TopicTypeId { get; set; }
+
+        public TopicType? TopicType { get; set; }
 
         [MaxLength(255)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         // Navigation properties
-        public ICollection<FavoriteTopic> FavoriteTopics { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+        // public ICollection<FavoriteTopic> FavoriteTopics { get; set; }
+        // public ICollection<Comment> Comments { get; set; }
     }
 }

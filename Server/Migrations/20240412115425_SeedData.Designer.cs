@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BlogExplorer.Migrations
+namespace Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240409211933_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240412115425_SeedData")]
+    partial class SeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,11 @@ namespace BlogExplorer.Migrations
 
             modelBuilder.Entity("BlogExplorer.Comment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CommentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"));
 
                     b.Property<string>("Body")
                         .IsRequired()
@@ -42,14 +42,12 @@ namespace BlogExplorer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("TopicId")
-                        .HasColumnType("int")
-                        .HasColumnName("topic_id");
+                        .HasColumnType("int");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
+                        .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("CommentId");
 
                     b.HasIndex("TopicId");
 
@@ -62,28 +60,26 @@ namespace BlogExplorer.Migrations
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int")
-                        .HasColumnName("user_id")
                         .HasColumnOrder(1);
 
                     b.Property<int>("TopicId")
                         .HasColumnType("int")
-                        .HasColumnName("topic_id")
                         .HasColumnOrder(2);
 
                     b.HasKey("UserId", "TopicId");
 
                     b.HasIndex("TopicId");
 
-                    b.ToTable("favorite_topics");
+                    b.ToTable("FavoriteTopics");
                 });
 
             modelBuilder.Entity("BlogExplorer.Topic", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("TopicId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TopicId"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -95,42 +91,41 @@ namespace BlogExplorer.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("TypeId")
-                        .HasColumnType("int")
-                        .HasColumnName("type_id");
+                    b.Property<int>("TopicTypeId")
+                        .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("TopicId");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("TopicTypeId");
 
                     b.ToTable("Topics");
                 });
 
             modelBuilder.Entity("BlogExplorer.TopicType", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("TopicTypeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TopicTypeId"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.HasKey("Id");
+                    b.HasKey("TopicTypeId");
 
-                    b.ToTable("topic_types");
+                    b.ToTable("TopicTypes");
                 });
 
             modelBuilder.Entity("BlogExplorer.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -147,7 +142,7 @@ namespace BlogExplorer.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Users");
                 });
@@ -155,7 +150,7 @@ namespace BlogExplorer.Migrations
             modelBuilder.Entity("BlogExplorer.Comment", b =>
                 {
                     b.HasOne("BlogExplorer.Topic", "Topic")
-                        .WithMany("Comments")
+                        .WithMany()
                         .HasForeignKey("TopicId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -174,7 +169,7 @@ namespace BlogExplorer.Migrations
             modelBuilder.Entity("BlogExplorer.FavoriteTopic", b =>
                 {
                     b.HasOne("BlogExplorer.Topic", "Topic")
-                        .WithMany("FavoriteTopics")
+                        .WithMany()
                         .HasForeignKey("TopicId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -193,24 +188,12 @@ namespace BlogExplorer.Migrations
             modelBuilder.Entity("BlogExplorer.Topic", b =>
                 {
                     b.HasOne("BlogExplorer.TopicType", "TopicType")
-                        .WithMany("Topics")
-                        .HasForeignKey("TypeId")
+                        .WithMany()
+                        .HasForeignKey("TopicTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("TopicType");
-                });
-
-            modelBuilder.Entity("BlogExplorer.Topic", b =>
-                {
-                    b.Navigation("Comments");
-
-                    b.Navigation("FavoriteTopics");
-                });
-
-            modelBuilder.Entity("BlogExplorer.TopicType", b =>
-                {
-                    b.Navigation("Topics");
                 });
 #pragma warning restore 612, 618
         }

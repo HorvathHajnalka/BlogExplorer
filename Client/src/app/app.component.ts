@@ -1,8 +1,9 @@
+// Import services
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ShowTopicComponent } from './topic/show-topic/show-topic.component';
 import { HttpClientModule } from '@angular/common/http';
-import { Title } from '@angular/platform-browser'; // Import the Title service
+import { Title } from '@angular/platform-browser'; 
 
 @Component({
   selector: 'app-root', // The component's CSS selector

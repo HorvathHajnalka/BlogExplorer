@@ -1,5 +1,4 @@
 ﻿using System;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BlogExplorer;
 using BlogExplorer.Data;
 
-namespace BlogExplorer.Controllers
+namespace Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -48,7 +47,7 @@ namespace BlogExplorer.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTopicType(int id, TopicType topicType)
         {
-            if (id != topicType.Id)
+            if (id != topicType.TopicTypeId)
             {
                 return BadRequest();
             }
@@ -82,7 +81,7 @@ namespace BlogExplorer.Controllers
             _context.TopicTypes.Add(topicType);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTopicType", new { id = topicType.Id }, topicType);
+            return CreatedAtAction("GetTopicType", new { id = topicType.TopicTypeId }, topicType);
         }
 
         // DELETE: api/TopicTypes/5
@@ -103,7 +102,7 @@ namespace BlogExplorer.Controllers
 
         private bool TopicTypeExists(int id)
         {
-            return _context.TopicTypes.Any(e => e.Id == id);
+            return _context.TopicTypes.Any(e => e.TopicTypeId == id);
         }
     }
 }

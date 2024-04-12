@@ -30,7 +30,9 @@ builder.Services.AddCors(options =>
         builder =>
         {
             // Allow requests from the specified origin
-            builder.WithOrigins("http://localhost:4200")
+            // builder.WithOrigins("http://localhost:4200")
+            // Allow any origin
+            builder.AllowAnyOrigin()
             // Allow any HTTP method (GET, POST, PUT, etc.)
             .AllowAnyMethod()
             // Allow any header to be sent in requests

@@ -8,17 +8,17 @@ namespace BlogExplorer
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         [StringLength(255)]
-        public string Username { get; set; }
+        public string Username { get; set; } = string.Empty;
 
         [StringLength(255)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Required]
         [StringLength(255)]
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
     }
 }

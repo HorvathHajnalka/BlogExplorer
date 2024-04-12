@@ -3,17 +3,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlogExplorer
 {
-    [Table("topic_types")]
     public class TopicType
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int TopicTypeId { get; set; }
 
         [MaxLength(255)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         // Navigation property
-        public ICollection<Topic> Topics { get; set; }
+        // public ICollection<Topic> Topics { get; set; }
     }
 }

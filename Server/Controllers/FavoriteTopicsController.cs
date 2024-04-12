@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BlogExplorer;
 using BlogExplorer.Data;
 
-namespace BlogExplorer.Controllers
+namespace Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BlogExplorer;
 using BlogExplorer.Data;
 
-namespace BlogExplorer.Controllers
+namespace Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -47,7 +47,7 @@ namespace BlogExplorer.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTopic(int id, Topic topic)
         {
-            if (id != topic.Id)
+            if (id != topic.TopicId)
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace BlogExplorer.Controllers
             _context.Topics.Add(topic);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTopic", new { id = topic.Id }, topic);
+            return CreatedAtAction("GetTopic", new { id = topic.TopicId }, topic);
         }
 
         // DELETE: api/Topics/5
@@ -102,7 +102,7 @@ namespace BlogExplorer.Controllers
 
         private bool TopicExists(int id)
         {
-            return _context.Topics.Any(e => e.Id == id);
+            return _context.Topics.Any(e => e.TopicId == id);
         }
     }
 }

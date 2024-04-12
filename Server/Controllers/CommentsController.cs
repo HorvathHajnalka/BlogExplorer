@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BlogExplorer;
 using BlogExplorer.Data;
 
-namespace BlogExplorer.Controllers
+namespace Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -47,7 +47,7 @@ namespace BlogExplorer.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutComment(int id, Comment comment)
         {
-            if (id != comment.Id)
+            if (id != comment.CommentId)
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace BlogExplorer.Controllers
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetComment", new { id = comment.Id }, comment);
+            return CreatedAtAction("GetComment", new { id = comment.CommentId }, comment);
         }
 
         // DELETE: api/Comments/5
@@ -102,7 +102,7 @@ namespace BlogExplorer.Controllers
 
         private bool CommentExists(int id)
         {
-            return _context.Comments.Any(e => e.Id == id);
+            return _context.Comments.Any(e => e.CommentId == id);
         }
     }
 }
