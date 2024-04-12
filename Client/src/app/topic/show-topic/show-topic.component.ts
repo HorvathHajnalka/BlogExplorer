@@ -27,7 +27,18 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
   ngOnInit(): void {
     // On component initialization, fetch the topic list from the BlogApiService and assign it to the topicList$ observable.
     this.topicList$ = this.service.getTopicList();
-      
+    this.topicTypesList$ = this.service.getTopicTypeList();
+    this.refreshTopicTypesMap();
+  }
+
+  refreshTopicTypesMap() {
+    this.service.getTopicTypeList().subscribe(data =>{
+      this.topicTypesList = data;
+
+      for(let i = 0; i < data.length; i++){
+        this.topicTypesMap.set(this.topicTypesList[i].topicTypeId, this.topicTypesList[i].name)
+      }
+    })
   }
 
 }

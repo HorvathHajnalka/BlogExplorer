@@ -16,7 +16,7 @@ export class BlogApiService {
   constructor(private http: HttpClient) { }
 
 
-  // --------------------------API CALLS FOR TOPICS------------------------------------------------------------------------
+  // --------------------------API CALLS FOR TOPIC------------------------------------------------------------------------
 
   // Retrieves a list of topics from the blog API.
   // Returns an Observable of any type (should ideally be typed to a model/interface representing a topic).
@@ -42,5 +42,25 @@ export class BlogApiService {
     return this.http.delete(this.blogAPIUrl + `/Topics/${id}`);
   }
 
-  // --------------------------API CALLS FOR ... ------------------------------------------------------------------------
+  // --------------------------API CALLS FOR TOPICTYPE ------------------------------------------------------------------------
+
+
+  getTopicTypeList(): Observable<any[]> {
+    return this.http.get<any>(this.blogAPIUrl + '/TopicTypes');
+  }
+
+  addTopicType(data:any){
+    return this.http.post(this.blogAPIUrl + '/TopicTypes', data);
+  }
+
+  updateTopicType(id:number|string, data:any){
+    return this.http.put(this.blogAPIUrl + `/TopicTypes/${id}`, data);
+  }
+
+  deleteTopicType(id:number|string){
+    return this.http.delete(this.blogAPIUrl + `/TopicTypes/${id}`);
+  }
+  
+  // --------------------------API CALLS FOR TOPICTYPE ------------------------------------------------------------------------
+
 }

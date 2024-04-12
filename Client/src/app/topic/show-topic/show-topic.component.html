@@ -1,10 +1,15 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-secondary float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Show Topic Types
+  </button>
+
 
 <table class="table table-striped">
     <thead>
         <tr>
             <th>Id</th>
             <th>Name</th>
-            <th>Type Id</th>
+            <th>Type</th>
             <th>Description</th>
         </tr>
     </thead>
@@ -12,11 +17,30 @@
         <tr *ngFor="let item of topicList$|async">
             <td>{{item.topicId}}</td>
             <td>{{item.name}}</td>
-            <td>{{item.topicTypeId}}</td>
+            <td>{{topicTypesMap.get(item.topicTypeId)}}</td>
+            <!-- <td>{{item.topicTypeId}}</td> -->
             <td>{{item.description}}</td>
         </tr>
     </tbody>
 </table>
+
+
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Topic Types</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p *ngFor="let type of topicTypesList$|async">{{type.topicTypeId}} - {{type.name}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   
 

@@ -2,13 +2,14 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ShowTopicComponent } from './topic/show-topic/show-topic.component';
+import { TopicComponent } from './topic/topic.component';
 import { HttpClientModule } from '@angular/common/http';
 import { Title } from '@angular/platform-browser'; 
 
 @Component({
   selector: 'app-root', // The component's CSS selector
   standalone: true, // Marks the component as standalone
-  imports: [RouterOutlet, ShowTopicComponent, HttpClientModule], // Imports necessary modules and components
+  imports: [RouterOutlet, ShowTopicComponent, TopicComponent, HttpClientModule], // Imports necessary modules and components
   templateUrl: './app.component.html', // The location of the component's template file
   styleUrls: ['./app.component.css'] // The location of the component's private CSS styles
 })
