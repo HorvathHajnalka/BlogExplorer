@@ -1,0 +1,13 @@
+html, body {
+    height: 100%; /* A teljes oldal magassága */
+    margin: 0; /* Eltávolítja az alapértelmezett margót */
+    padding: 0; /* Eltávolítja az alapértelmezett paddingot */
+    display: flex; /* Flexbox elrendezés a body-n */
+    flex-direction: column; /* Függőleges irányban rendezi el a tartalmakat */
+}
+.full-height {
+    min-height: 100vh; /* Legalább a képernyő teljes magasságát foglalja el */
+    display: flex; /* Flexbox elrendezés */
+    flex-direction: column; /* Függőleges irányban rendezi el a tartalmakat */
+    justify-content: center; /* Függőlegesen középre igazítja az elemeket */
+}

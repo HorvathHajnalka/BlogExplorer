@@ -1,0 +1,17 @@
+
+    <router-outlet></router-outlet>
+
+    <div class="container full-height" *ngIf="isVisible">
+        <div class="row justify-content-center ">
+            <div class="col-auto d-flex align-items-center">
+                <div class="btn-group-vertical" role="group" aria-label="Button List">
+                    <button class="btn btn-primary" routerLink="/topics" routerLinkActive="active" exact>Manage Topics</button>
+                    <br>
+                    <button class="btn btn-primary" routerLink="/users" routerLinkActive="active" exact>Manage Users</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
