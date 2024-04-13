@@ -17,74 +17,77 @@ export class AddEditTopicComponent {
   topicList$!: Observable<any[]>;
   topicTypesList$!: Observable<any[]>;
 
-  constructor(private service:BlogApiService) {}
+  constructor(private service: BlogApiService) {}
 
-  @Input() topic:any;
+  @Input() topic: any; // Input property to pass data into the component
+  // Local properties to hold topic details
   topicId: number = 0;
   name: string = "";
   topicTypeId: number = 0;
   description: string = "";
 
+  // Lifecycle hook that runs initialization logic
   ngOnInit(): void  {
+    // If an existing topic is passed, populate the form fields
     if (this.topic) {
-
       this.topicId = this.topic.topicId;
-      this.name = this.topic.name
+      this.name = this.topic.name;
       this.topicTypeId = this.topic.topicTypeId;
       this.description = this.topic.description;
     }
+    // Fetches lists for topics and topic types from the API
     this.topicTypesList$ = this.service.getTopicTypeList();
     this.topicList$ = this.service.getTopicList();
   }
 
+  // Method to add a new topic using the service
   addTopic() {
     var topic = {
-      name:this.name,
-      topicTypeId: +this.topicTypeId,
-      description:this.description 
-    }
+      name: this.name,
+      topicTypeId: +this.topicTypeId, // Ensures topicTypeId is a number
+      description: this.description
+    };
     this.service.addTopic(topic).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
-        closeModalBtn.click();
+        closeModalBtn.click(); // Programmatically clicks to close modal
       }
 
       var showAddSuccess = document.getElementById('add-success-alert');
       if(showAddSuccess) {
-        showAddSuccess.style.display = "block";
+        showAddSuccess.style.display = "block"; // Shows success message
       }
-      setTimeout(function(){
+      setTimeout(function() {
         if(showAddSuccess) {
-          showAddSuccess.style.display = "none"
+          showAddSuccess.style.display = "none"; // Hides success message after 4 seconds
         }
       }, 4000);
-    })
+    });
   }
 
+  // Method to update an existing topic using the service
   updateTopic(){
     var topic = {
-      topicId:this.topicId,
-      name:this.name,
+      topicId: this.topicId,
+      name: this.name,
       topicTypeId: +this.topicTypeId,
-      description:this.description 
-    }
-    var topicId:number = this.topicId;
-    this.service.updateTopic(topicId, topic).subscribe(res => {
+      description: this.description
+    };
+    this.service.updateTopic(this.topicId, topic).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
-        closeModalBtn.click();
+        closeModalBtn.click(); // Closes the modal window
       }
 
       var showUpdateSuccess = document.getElementById('update-success-alert');
       if(showUpdateSuccess) {
-        showUpdateSuccess.style.display = "block";
+        showUpdateSuccess.style.display = "block"; // Displays the update success alert
       }
-      setTimeout(function(){
+      setTimeout(function() {
         if(showUpdateSuccess) {
-          showUpdateSuccess.style.display = "none"
+          showUpdateSuccess.style.display = "none"; // Automatically hides the alert after 4 seconds
         }
       }, 4000);
-    })
+    });
   }
-
 }

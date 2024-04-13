@@ -1,24 +1,30 @@
+/* Initial state: Alert divs are hidden on page load */
 #add-success-alert,
 #update-success-alert,
-#delete-success-alert{
+#delete-success-alert {
     display: none;
 }
 
+/* Animation properties for success alerts */
 #add-success-alert,
 #update-success-alert,
-#delete-success-alert{
+#delete-success-alert {
+    /* Apply the fadeInAndOut animation to each alert */
     animation-name: fadeInAndOut;
+    /* The total duration of the animation is 4 seconds */
     animation-duration: 4s;
 }
 
+/* Define animation using WebKit syntax for compatibility with older WebKit browsers */
 @-webkit-keyframes fadeInAndOut {
-    0% {opacity: 0;}
-    50% {opacity: 1;}
-    100% {opacity: 0;}
+    0% { opacity: 0; } /* Start fully transparent */
+    50% { opacity: 1; } /* Fully visible at half time */
+    100% { opacity: 0; } /* Return to fully transparent at the end */
 }
 
+/* Standard keyframes for fadeInAndOut animation */
 @keyframes fadeInAndOut {
-    0% {opacity: 0;}
-    50% {opacity: 1;}
-    100% {opacity: 0;}
+    0% { opacity: 0; } /* Start with the alert completely invisible */
+    50% { opacity: 1; } /* Fade in to full visibility halfway through the animation */
+    100% { opacity: 0; } /* Fade out to full invisibility by the end of the animation */
 }

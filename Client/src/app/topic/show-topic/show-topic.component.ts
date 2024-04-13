@@ -32,64 +32,70 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
     this.refreshTopicTypesMap();
   }
 
-  // Variables (properties)
-  modalTitle:string = '';
-  activateAddEditTopicComponent:boolean = false;
-  topic:any;
+   // Component properties related to UI state.
+   modalTitle: string = ''; // Title for the modal dialog.
+   activateAddEditTopicComponent: boolean = false; // Controls visibility of the add/edit modal.
+   topic: any; // The current topic to add/edit.
+ 
+   
+   // Opens the modal to add a new topic.
+   modalAdd() {
+     this.topic = {
+       topicId: 0,
+       name: null,
+       topicTypeId: 0,
+       description: null
+     };
+     this.modalTitle = "Add New Topic"; // Set modal title.
+     this.activateAddEditTopicComponent = true; // Show the modal component.
+   }
+ 
+   // Opens the modal to edit an existing topic.
+   modalEdit(item: any) {
+     this.topic = item; // Set the current topic to the item to be edited.
+     this.modalTitle = "Edit Topic"; // Set modal title.
+     this.activateAddEditTopicComponent = true; // Show the modal component.
+   }
+ 
 
-  modalAdd() {
-    this.topic = {
-      topicId: 0,
-      name: null,
-      topicTypeId: 0,
-      description: null
-    }
-    this.modalTitle = "Add New Topic";
-    this.activateAddEditTopicComponent = true;
-  }
+   // Deletes a topic after confirmation.
+   delete(item: any) {
+     if (confirm(`Are you sure you want to delete topic: "${item.name}" ?`)) {
+       this.service.deleteTopic(item.topicId).subscribe(res => {
+         var closeModalBtn = document.getElementById('add-edit-modal-close');
+         if (closeModalBtn) {
+           closeModalBtn.click(); // Programmatically close the modal.
+         }
+         var showDeleteSuccess = document.getElementById('delete-success-alert');
+         if (showDeleteSuccess) {
+           showDeleteSuccess.style.display = "block"; // Show success message.
+         }
+         setTimeout(function() {
+           if (showDeleteSuccess) {
+             showDeleteSuccess.style.display = "none"; // Hide success message after 4 seconds.
+           }
+         }, 4000);
+         this.topicList$ = this.service.getTopicList(); // Refresh the topic list.
+       });
+     }
+   }
+ 
 
-  modalEdit(item:any){
-    this.topic = item;
-    this.modalTitle = "Edit Topic";
-    this.activateAddEditTopicComponent = true;
+   // Closes the modal and refreshes the topic list.
+   modalClose() {
+     this.activateAddEditTopicComponent = false; // Hide the modal.
+     this.topicList$ = this.service.getTopicList(); // Refresh the topic list.
+   }
+ 
 
-  }
-
-  delete(item:any){
-    if(confirm(`Are you sure you want to delete topic ${item.name}`)){
-      this.service.deleteTopic(item.topicId).subscribe(res => {
-    
-          var closeModalBtn = document.getElementById('add-edit-modal-close');
-          if(closeModalBtn) {
-            closeModalBtn.click();
-          }
-          var showDeleteSuccess = document.getElementById('delete-success-alert');
-          if(showDeleteSuccess) {
-            showDeleteSuccess.style.display = "block";
-          }
-          setTimeout(function(){
-            if(showDeleteSuccess) {
-              showDeleteSuccess.style.display = "none"
-            }
-          }, 4000);
-          this.topicList$ = this.service.getTopicList();
-      })
-    }
-  }
-
-  modalClose() {
-    this.activateAddEditTopicComponent = false;
-    this.topicList$ = this.service.getTopicList();
-  }
-
-  refreshTopicTypesMap() {
-    this.service.getTopicTypeList().subscribe(data => {
-      this.topicTypesList = data;
-
-      for(let i = 0; i < data.length; i++){
-        this.topicTypesMap.set(this.topicTypesList[i].topicTypeId, this.topicTypesList[i].name)
-      }
-    })
-  }
-
-}
+   // Populates the map of topic types for display.
+   refreshTopicTypesMap() {
+     this.service.getTopicTypeList().subscribe(data => {
+       this.topicTypesList = data; // Store the list of topic types.
+       for (let i = 0; i < data.length; i++) {
+         this.topicTypesMap.set(this.topicTypesList[i].topicTypeId, this.topicTypesList[i].name); // Map topic type IDs to names.
+       }
+     });
+   }
+ 
+ }
