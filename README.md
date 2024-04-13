@@ -1,10 +1,26 @@
 # Blog Explorer Platform README
 
-A platform for blog management and interaction.
+## Overview
+This prototype WebApplication is designed for managing blog posts, enabling users to interact with topics and comments within a server-client architecture, communicating through an API. The system has features such as database integration, authentication, and real-time communication.
 
-Below you will find comprehensive instructions to get you started on Windows environment.
+## Technologies Used
+- **Programming Language:** C# .NET
+- **Web Framework:** ASP.NET
+- **Frontend Framework:** Angular
+- **API Documentation:** Swagger
+- **Database:** MS SQL Sever
+- **Database Management:** Entity Framework for migrations
+- **Real-Time Communication:** Websocket
 
-## Prerequisites
+## Key Features
+- **Authentication:** Access to the system requires user authentication.
+- **Topic Interaction:** Users can view, filter, and select topics to see or add comments.
+- **Personalized Topic List:** Users can view a list of topics they have interacted with.
+- **Notification System:** The system notifies users of new comments on topics they follow.
+- **Real-Time Updates:** Leveraging Websockets, the system provides real-time updates to users
+
+
+## Getting started
 
 Before you begin, ensure you have the following software installed on your system:
 
@@ -51,7 +67,11 @@ To get your environment up and running, follow these steps:
 1. Clone the git repository to your local machine.
 2. Open Visual Studio and navigate to your local repository.
 3. Open the `.sln` file to load the project.
-4. Run the project to start the server side of the platform.
+4. Before running the project, it's crucial to update the database. In Visual Studio, open the **Package Manager Console** and execute the following command for database migration:
+   ```
+   dotnet ef database update
+   ```
+5. Now, run the project to start the server side of the platform.
 
 ### Client Side
 
@@ -63,14 +83,18 @@ To get your environment up and running, follow these steps:
    ```
 4. Navigate to the Angular project directory:
    ```
-   cd .\angular17-blogexplorer-api
+   cd .\Client
    ```
 5. Start the Angular development server:
    ```
    ng serve --open
    ```
-   This command compiles the application, launches the development server, and opens the application in your default web browser.
+  This command compiles the client on port 4200, launches the development server on port 7111, and opens the application in your default web browser. Please note that the application is configured to only work on port 4200 and 7111.
 
 ## Conclusion
 
 You should now have the Blog Explorer Platform running locally on your machine.
+
+
+
+

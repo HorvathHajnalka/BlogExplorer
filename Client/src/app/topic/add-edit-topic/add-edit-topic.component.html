@@ -1,0 +1,38 @@
+<!-- Form structure for adding or editing topics -->
+<form>
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <!-- Input bound to the 'name' property in the component, using two-way binding with ngModel -->
+        <input type="text" class="form-control" [(ngModel)]="name" name="name">  
+    </div>
+
+    <!-- Form group for selecting the topic type -->
+    <div class="mb-3">
+        <label for="topicTypeId" class="form-label">Topic Type</label>
+        <!-- Select input for choosing a topic type, bound to 'topicTypeId' with ngModel -->
+        <select class="form-control" name="topicTypeId" id="topicTypeId" [(ngModel)]="topicTypeId">
+            <!-- Dynamic generation of options based on the topicTypesList$ observable -->
+            <!-- Uses the async pipe to subscribe and unwrap the observable -->
+            <option *ngFor="let type of topicTypesList$ | async" [value]="type.topicTypeId">{{type.name}}</option>
+        </select>
+    </div>
+
+    <!-- Form group for the topic's description -->
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <!-- Input for the topic description, using two-way binding with ngModel -->
+        <input type="text" class="form-control" [(ngModel)]="description" name="description">  
+    </div>
+
+    <!-- Conditional button to add a new topic -->
+    <!-- Only shown if topic.topicId is 0 (i.e., no existing topic ID is present) -->
+    <button (click)="addTopic()" *ngIf="topic.topicId==0" class="btn btn-primary">
+        Add
+    </button>
+
+    <!-- Conditional button to update an existing topic -->
+    <!-- Only shown if topic.topicId is not 0 (i.e., an existing topic ID is present) -->
+    <button (click)="updateTopic()" *ngIf="topic.topicId!=0" class="btn btn-primary">
+        Update
+    </button>
+</form>
