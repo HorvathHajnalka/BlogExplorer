@@ -1,10 +1,24 @@
+<!-- Load icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <!-- Button to open modal for adding a new topic -->
 <button type="button" class="btn btn-primary float-end m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modalAdd()">
   + Add New Topic
 </button>
 
-
+<div class="input-group mb-3">
+  <input type="text" class="form-control" placeholder="Search by topic type..." [(ngModel)]="searchTerm">
+  <button class="btn btn-outline-primary me-2 mb-1" (click)="searchByTopicType()" data-bs-toggle="modal" data-bs-target="#searchModal">
+    <i class="fa fa-search"></i>
+  </button>
+  <button class="btn btn-outline-danger mb-1" (click)="clearSearchTerm()">
+    <i class="fa fa-times"></i>
+  </button>
+</div>
 <br>
+
+
+
 
 <!-- Table displaying topics with dynamic data binding using Angular's *ngFor directive to iterate over topicList$ observable -->
 <table class="table table-striped">
@@ -18,7 +32,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of topicList$ | async"> <!-- Asynchronously receive the topics list -->
+    <tr *ngFor="let item of filteredTopicList$ | async">
       <td>{{ item.topicId }}</td>
       <td>{{ item.name }}</td>
       <td>{{ topicTypesMap.get(item.topicTypeId) }}</td> <!-- Display topic type using map to resolve IDs to names -->

@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { BlogApiService } from '../../blog-api.service';
 import { CommonModule } from '@angular/common'; 
 import { AddEditTopicComponent } from '../add-edit-topic/add-edit-topic.component';
+import { FormsModule } from '@angular/forms';
 
 // Decorator that marks a class as an Angular component, providing template and style information.
 @Component({
   selector: 'app-show-topic', // The CSS selector that identifies this component in a template
   standalone: true, // Marks this component as standalone, meaning it can be imported without needing to be declared in a module.
-  imports: [CommonModule, AddEditTopicComponent], // Imports CommonModule for common directives like ngIf, ngFor, etc.
+  imports: [CommonModule, AddEditTopicComponent, FormsModule], // Imports CommonModule for common directives like ngIf, ngFor, etc.
   templateUrl: './show-topic.component.html', // Location of the component's template file.
   styleUrls: ['./show-topic.component.css'] // Location of the component's private CSS styles.
 })
@@ -18,7 +20,8 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
   topicList$!:Observable<any[]>; // Observable to hold the list of topics, fetched from the BlogApiService
   topicTypesList$!:Observable<any[]>; // Observable to hold the list of topic types, if needed in future expansion.
   topicTypesList:any=[]; // Array to hold topic types, currently not populated in ngOnInit.
-
+  searchTerm: string = '';
+  filteredTopicList$: Observable<any[]> | undefined;
   // Map to display data associated with foreign keys. Maps topic type IDs to their string representations.
   topicTypesMap:Map<number, string> = new Map()
 
@@ -30,6 +33,7 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
     this.topicList$ = this.service.getTopicList();
     this.topicTypesList$ = this.service.getTopicTypeList();
     this.refreshTopicTypesMap();
+    this.searchByTopicType();
   }
 
    // Component properties related to UI state.
@@ -75,7 +79,7 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
              showDeleteSuccess.style.display = "none"; // Hide success message after 4 seconds.
            }
          }, 4000);
-         this.topicList$ = this.service.getTopicList(); // Refresh the topic list.
+         this.searchByTopicType();
        });
      }
    }
@@ -85,6 +89,7 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
    modalClose() {
      this.activateAddEditTopicComponent = false; // Hide the modal.
      this.topicList$ = this.service.getTopicList(); // Refresh the topic list.
+     this.searchByTopicType();
    }
  
 
@@ -97,5 +102,33 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
        }
      });
    }
- 
+
+searchByTopicType() {
+  if (this.searchTerm.trim() === '') {
+    this.filteredTopicList$ = this.service.getTopicList();
+    return;
+  }
+
+  this.filteredTopicList$ = this.service.getTopicList().pipe(
+    switchMap(topics => {
+      return of(topics.filter(item => {
+        const topicType = this.topicTypesMap.get(item.topicTypeId);
+        if (topicType) {
+          return topicType.toLowerCase().startsWith(this.searchTerm.toLowerCase());
+        }
+        return false;
+      }));
+    })
+  );
+}
+
+clearSearchTerm(): void {
+  this.searchTerm = ''; // Clear the search term
+  this.searchByTopicType();
+}
+
+  
+
+  
+  
  }
