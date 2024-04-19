@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BlogExplorer;
 using BlogExplorer.Data;
+using Server.Models;
 
 namespace Server.Controllers
 {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace BlogExplorer
+namespace Server.Models
 {
     public class Comment
     {
@@ -11,12 +11,12 @@ namespace BlogExplorer
 
         [ForeignKey("User")]
         public int UserId { get; set; }
-        
+
         public User? User { get; set; }
 
         [ForeignKey("Topic")]
         public int TopicId { get; set; }
-        
+
         public Topic? Topic { get; set; }
 
         [MaxLength(255)]
