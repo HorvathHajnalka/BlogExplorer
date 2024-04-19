@@ -3,6 +3,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, Event, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { BlogApiService } from '../blog-api.service'; 
+
 
 @Component({
   selector: 'app-login',
@@ -21,7 +23,7 @@ export class LoginComponent {
 
     loginForm!: FormGroup;
   
-    constructor(private router: Router, private fb: FormBuilder) { } // Injects the Router service for navigation and routing event handling
+    constructor(private router: Router, private fb: FormBuilder, private service: BlogApiService) { } // Injects the Router service for navigation and routing event handling
   
     ngOnInit() {
       this.loginForm = this.fb.group({
@@ -46,10 +48,23 @@ export class LoginComponent {
       this.isText ? this.type = "text" : this.type = "password";
   }
 
-  onSubmit(){
+  onLogin(){
     if(this.loginForm.valid){
       // send obj. to database
       // console.log(this.loginForm.value)
+
+      this.service.login(this.loginForm.value)
+      .subscribe({
+        next:(res)=>{
+          alert(res.message);
+          this.loginForm.reset();
+          this.router.navigate(['main-page']);
+        },
+        error:(err)=>{
+          alert(err?.error.message)
+        }
+      })
+      
 
     }else{
       // throw error

@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, Event, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { BlogApiService } from '../blog-api.service'; 
 
 @Component({
   selector: 'app-registration',
@@ -24,7 +25,7 @@ export class RegistrationComponent {
 
   registrationForm!: FormGroup;
 
-  constructor(private router: Router, private fb: FormBuilder) { } // Injects the Router service for navigation and routing event handling
+  constructor(private router: Router, private fb: FormBuilder, private service: BlogApiService) { } // Injects the Router service for navigation and routing event handling
 
   ngOnInit() {
     this.registrationForm = this.fb.group({
@@ -56,10 +57,21 @@ export class RegistrationComponent {
   this.isText2 ? this.type2 = "text" : this.type2 = "password";
   }
 
-  onSubmit(){
+  onRegister(){
     if(this.registrationForm.valid){
       // send obj. to database
       // console.log(this.loginForm.value)
+      this.service.signUp(this.registrationForm.value)
+      .subscribe({
+        next:(res)=>{
+          alert(res.message);
+          this.registrationForm.reset();
+          this.router.navigate(['login']);
+        },
+        error:(err)=>{
+          alert(err?.error.message)
+        }
+      })
 
     }else{
       // throw error
