@@ -1,12 +1,13 @@
 # Blog Explorer Platform README
 
 ## Overview
-This prototype WebApplication is designed for managing blog posts, enabling users to interact with topics and comments within a server-client architecture, communicating through an API. The system has features such as database integration, authentication, and real-time communication.
+This prototype WebApplication is designed for managing blog posts, enabling users to interact with topics and comments within a server-client architecture, communicating through an RESTful APIs. The system has features such as database integration, authentication, and real-time communication.
 
 ## Technologies Used
 - **Programming Language:** C# .NET
 - **Web Framework:** ASP.NET
-- **Frontend Framework:** Angular
+- **Frontend Framework:** Angular 17
+- **Styling Framework:** Bootstrap v5.3
 - **API Documentation:** Swagger
 - **Database:** MS SQL Sever
 - **Database Management:** Entity Framework for migrations
@@ -17,8 +18,7 @@ This prototype WebApplication is designed for managing blog posts, enabling user
 - **Topic Interaction:** Users can view, filter, and select topics to see or add comments.
 - **Personalized Topic List:** Users can view a list of topics they have interacted with.
 - **Notification System:** The system notifies users of new comments on topics they follow.
-- **Real-Time Updates:** Leveraging Websockets, the system provides real-time updates to users
-
+- **Real-Time Updates:** Utilizes Websockets to deliver updates to users instantaneously.
 
 ## Getting started
 

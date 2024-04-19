@@ -61,6 +61,29 @@ export class BlogApiService {
     return this.http.delete(this.blogAPIUrl + `/TopicTypes/${id}`);
   }
   
-  // --------------------------API CALLS FOR TOPICTYPE ------------------------------------------------------------------------
+  // --------------------------API CALLS FOR USERS ------------------------------------------------------------------------
+
+  getUserList(): Observable<any[]> {
+    return this.http.get<any>(this.blogAPIUrl + '/Users');
+  }
+
+  addUser(data:any){
+    return this.http.post(this.blogAPIUrl + '/Users', data);
+  }
+
+  updateUser(id:number|string, data:any){
+    return this.http.put(this.blogAPIUrl + `/Users/${id}`, data);
+  }
+
+  deleteUser(id:number|string){
+    return this.http.delete(this.blogAPIUrl + `/Users/${id}`);
+  }
+
+  signUp(data:any){
+    return this.http.post<any>(this.blogAPIUrl + `/Users/register`, data)
+  }
+  login(data: any){
+    return this.http.post<any>(this.blogAPIUrl + `/Users/authenticate`, data)
+  }
 
 }
