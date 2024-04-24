@@ -1,5 +1,9 @@
 using BlogExplorer.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 // Define a policy name for CORS settings
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -40,6 +44,41 @@ builder.Services.AddCors(options =>
         });
 });
 
+// Configure authentication services.
+builder.Services.AddAuthentication(x =>
+{
+    // Set the default authentication scheme.
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+
+    // Set the default challenge scheme
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+}).AddJwtBearer(x =>
+{
+    // Disable the requirement for HTTPS - enables testing 
+    x.RequireHttpsMetadata = false;
+
+    // Enable saving the token in the authentication properties. Useful for accessing the token on subsequent requests.
+    x.SaveToken = true;
+
+    // Configure token validation parameters.
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        // Ensure that the issuer signing key is valid.
+        ValidateIssuerSigningKey = true,
+
+        // Set the issuer signing key with a symmetric security key based on a secret string.
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("9f74c1da7f6e8d3b4a5fa6b0cdee5f36f0934e4884fa2c3a5e6bdf5a80c0f2e1")),
+
+        // Disable audience validation. This means the token can be considered valid regardless of the 'aud' claim.
+        ValidateAudience = false,
+
+        // Disable issuer validation. This means the token can be considered valid regardless of the 'iss' claim.
+        ValidateIssuer = false
+    };
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline, especially for development environment
@@ -56,6 +95,9 @@ app.UseHttpsRedirection();
 
 // Apply the CORS policy to the app
 app.UseCors(myAllowSpecificOrigins);
+
+// Use Authentication middleware
+app.UseAuthentication();
 
 // Use Authorization middleware
 app.UseAuthorization();

@@ -80,10 +80,22 @@ export class BlogApiService {
   }
 
   signUp(data:any){
-    return this.http.post<any>(this.blogAPIUrl + `/Users/register`, data)
+    return this.http.post<any>(this.blogAPIUrl + `/Users/register`, data);
   }
   login(data: any){
-    return this.http.post<any>(this.blogAPIUrl + `/Users/authenticate`, data)
+    return this.http.post<any>(this.blogAPIUrl + `/Users/authenticate`, data);
+  }
+
+  storeToken(tokenValue: string){
+    localStorage.setItem('token', tokenValue);
+  }
+
+  getToken(){
+    return localStorage.getItem('token');
+  }
+
+  isLoggedIn(): boolean{
+      return !localStorage.getItem('token')
   }
 
 }

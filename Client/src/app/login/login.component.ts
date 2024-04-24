@@ -59,15 +59,20 @@ export class LoginComponent {
   onLogin() {
     if (this.loginForm.valid) {
       this.service.login(this.loginForm.value).subscribe({
+        // login success
         next: (res) => {
           this.loginForm.reset();
+          this.service.storeToken(res.token);
           this.router.navigate(['main-page']);
+
+          // popup message, when login was successful
           this.snackBar.open(res.message, '', {
             duration: 3000,  // popup duration (milliseconds)
             verticalPosition: 'top' // popup position
           });
           
         },
+        // login failed
         error: (err) => {
           this.loginError = err?.error.message; 
         }

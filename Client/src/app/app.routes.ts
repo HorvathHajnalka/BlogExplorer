@@ -8,7 +8,7 @@ import { RegistrationComponent } from './registration/registration.component';
 export const routes: Routes = [
 
     // Redirects an path 'localhost:4200' to 'localhost:4200/main-page', so instead of 'localhost:4200', 'localhost:4200/main-page' will open
-    { path: '', redirectTo: '/main-page', pathMatch: 'full' },
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
 
     // Defines the routes for components 
     {path:'topics', component:TopicComponent},
