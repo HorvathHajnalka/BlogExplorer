@@ -4,12 +4,14 @@ import { RouterOutlet, RouterLink, RouterLinkActive, Router, Event, NavigationEn
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { BlogApiService } from '../blog-api.service'; 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [HttpClientModule, RouterOutlet, RouterLink, RouterLinkActive, CommonModule, ReactiveFormsModule],
+  imports: [HttpClientModule, RouterOutlet, RouterLink, RouterLinkActive, CommonModule, ReactiveFormsModule, MatSnackBarModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -22,8 +24,14 @@ export class LoginComponent {
     eyeIcon: string = "fa-eye-slash";
 
     loginForm!: FormGroup;
+    loginError: string = '';
   
-    constructor(private router: Router, private fb: FormBuilder, private service: BlogApiService) { } // Injects the Router service for navigation and routing event handling
+    constructor(
+      private router: Router,
+      private fb: FormBuilder,
+      private service: BlogApiService,
+      private snackBar: MatSnackBar
+      ) { } // Injects the Router service for navigation and routing event handling
   
     ngOnInit() {
       this.loginForm = this.fb.group({
@@ -48,31 +56,24 @@ export class LoginComponent {
       this.isText ? this.type = "text" : this.type = "password";
   }
 
-  onLogin(){
-    if(this.loginForm.valid){
-      // send obj. to database
-      // console.log(this.loginForm.value)
-
-      this.service.login(this.loginForm.value)
-      .subscribe({
-        next:(res)=>{
-          alert(res.message);
+  onLogin() {
+    if (this.loginForm.valid) {
+      this.service.login(this.loginForm.value).subscribe({
+        next: (res) => {
           this.loginForm.reset();
           this.router.navigate(['main-page']);
+          this.snackBar.open(res.message, '', {
+            duration: 3000,  // popup duration (milliseconds)
+            verticalPosition: 'top' // popup position
+          });
+          
         },
-        error:(err)=>{
-          alert(err?.error.message)
+        error: (err) => {
+          this.loginError = err?.error.message; 
         }
-      })
-      
-
-    }else{
-      // throw error
-      //console.log("Form is not valid")
-
+      });
+    } else {
       this.validateAllFormFields(this.loginForm);
-      alert("Invalid input")
-
     }
   }
 

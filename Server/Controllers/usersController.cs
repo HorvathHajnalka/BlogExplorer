@@ -93,12 +93,22 @@ namespace Server.Controllers
             if (userObj == null)
                 return BadRequest();
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(x => x.Username == userObj.Username && x.Password == userObj.Password);
-            if (user == null)
-                return NotFound(new { Message = "User Not Found!" });
+            // check if the username exists
 
-            return Ok(new { Message = "Login Success!" });
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x => x.Username == userObj.Username);
+
+            if (user == null)
+                return NotFound(new { Message = "User not found!" });
+
+            // verify password
+
+            if(!PasswordHasher.VerifyPassword(userObj.Password, user.Password))
+            {
+                return BadRequest(new { Message = "Password is incorrect!" });
+            }
+
+            return Ok(new { Message = "Login was successful!" });
         }
 
         [HttpPost("register")]
@@ -107,13 +117,27 @@ namespace Server.Controllers
             if (userObj == null)
                 return BadRequest();
 
+            // check username
+
+            if (await CheckUserNameExistAsync(userObj.Username))
+                return BadRequest(new { Message = "Username already exists! " });
+
             // Hashing the password
             userObj.Password = PasswordHasher.HashPassword(userObj.Password);
+
+            userObj.Role = "user";
+            userObj.Token = "";
 
             await _context.Users.AddAsync(userObj);
             await _context.SaveChangesAsync();
 
-            return Ok(new { Message = "User Registered!" });
+            return Ok(new { Message = "Successful registration!" });
+        }
+
+        // check if the username exists
+        private async Task<bool> CheckUserNameExistAsync(string username)
+        {
+            return await _context.Users.AnyAsync(x => x.Username == username);
         }
 
         // DELETE: api/Users/5

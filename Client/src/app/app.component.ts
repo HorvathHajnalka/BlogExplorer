@@ -7,6 +7,7 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { Title } from '@angular/platform-browser'; 
 
+
 @Component({
   selector: 'app-root', // The component's CSS selector
   standalone: true, // Marks the component as standalone

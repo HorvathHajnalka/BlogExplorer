@@ -3,15 +3,29 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, Event, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { BlogApiService } from '../blog-api.service'; 
+import { BlogApiService } from '../blog-api.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; 
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+
+export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  if (control instanceof FormGroup) {
+    const password = control.get('password');
+    const confirmPassword = control.get('password2');
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      return { 'passwordMismatch': true };
+    }
+  }
+  return null;
+};
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [HttpClientModule, RouterOutlet, RouterLink, RouterLinkActive, CommonModule, ReactiveFormsModule],
+  imports: [HttpClientModule, RouterOutlet, RouterLink, RouterLinkActive, CommonModule, ReactiveFormsModule, MatSnackBarModule],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.css'
 })
+
 export class RegistrationComponent {
   isVisible = true;  // Tracks whether to show or hide certain UI elements
 
@@ -24,8 +38,14 @@ export class RegistrationComponent {
   eyeIcon2: string = "fa-eye-slash";
 
   registrationForm!: FormGroup;
+  registrationError: string = '';
 
-  constructor(private router: Router, private fb: FormBuilder, private service: BlogApiService) { } // Injects the Router service for navigation and routing event handling
+  constructor(
+    private router: Router, 
+    private fb: FormBuilder, 
+    private service: BlogApiService,
+    private snackBar: MatSnackBar
+  ) { } // Injects the Router service for navigation and routing event handling
 
   ngOnInit() {
     this.registrationForm = this.fb.group({
@@ -34,7 +54,7 @@ export class RegistrationComponent {
       name: ['',Validators.required],
       password: ['',Validators.required],
       password2: ['',Validators.required],
-    })
+    }, { validators: passwordMatchValidator });
 
     // Subscribe to routing events to listen for changes in navigation
     this.router.events.subscribe((event: Event) => {
@@ -45,6 +65,7 @@ export class RegistrationComponent {
       }
     });
   }
+
 
   hideShowPass(){
     this.isText = !this.isText;
@@ -64,21 +85,22 @@ export class RegistrationComponent {
       this.service.signUp(this.registrationForm.value)
       .subscribe({
         next:(res)=>{
-          alert(res.message);
           this.registrationForm.reset();
           this.router.navigate(['login']);
+          this.snackBar.open(res.message, '', {
+            duration: 3000,  // popup duration (milliseconds)
+            verticalPosition: 'top' // popup position
+          });
         },
-        error:(err)=>{
-          alert(err?.error.message)
+        error: (err) => {
+          this.registrationError = err?.error.message; 
         }
       })
 
     }else{
       // throw error
       //console.log("Form is not valid")
-
       this.validateAllFormFields(this.registrationForm);
-      alert("Invalid input")
 
     }
   }

@@ -45,5 +45,8 @@ input[type='password']{
     width: 100%;
 }
 
+h3.pt-3.font-weight-bold {
+    font-size: 34px;  
+}
 
 
