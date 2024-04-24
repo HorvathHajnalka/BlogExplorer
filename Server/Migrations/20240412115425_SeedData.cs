@@ -16,10 +16,10 @@ namespace Server.Migrations
             migrationBuilder.Sql("INSERT INTO TopicTypes (Name) VALUES ('Education')");
 
             // Insert Users
-            migrationBuilder.Sql("INSERT INTO Users (Username, Name, Password) VALUES ('johndoe', 'John Doe', 'password1')");
-            migrationBuilder.Sql("INSERT INTO Users (Username, Name, Password) VALUES ('janedoe', 'Jane Doe', 'password2')");
-            migrationBuilder.Sql("INSERT INTO Users (Username, Name, Password) VALUES ('admin', 'Admin Arnold', 'admin')");
-            migrationBuilder.Sql("INSERT INTO Users (Username, Name, Password) VALUES ('user', 'User Ursula', 'user')");
+            migrationBuilder.Sql("INSERT INTO Users (Username, Name, Password, Token, Role) VALUES ('johndoe', 'John Doe', 'password1', '', 'user')");
+            migrationBuilder.Sql("INSERT INTO Users (Username, Name, Password, Token, Role) VALUES ('janedoe', 'Jane Doe', 'password2', '', 'user')");
+            migrationBuilder.Sql("INSERT INTO Users (Username, Name, Password, Token, Role) VALUES ('admin', 'Admin Arnold', 'admin', '', 'admin')");
+            migrationBuilder.Sql("INSERT INTO Users (Username, Name, Password, Token, Role) VALUES ('user', 'User Ursula', 'user', '', 'user')");
 
             // Insert Topics
             migrationBuilder.Sql("INSERT INTO Topics (Name, TopicTypeId, Description) VALUES ('Artificial Intelligence', (SELECT TopicTypeId FROM TopicTypes WHERE Name = 'Technology'), 'Discussion about AI advancements')");

@@ -20,5 +20,11 @@ namespace Server.Models
         [Required]
         [StringLength(255)]
         public string Password { get; set; } = string.Empty;
+
+        [StringLength(255)]
+        public string Token { get; set; } = string.Empty;
+
+        [StringLength(255)]
+        public string Role { get; set; } = string.Empty;
     }
 }

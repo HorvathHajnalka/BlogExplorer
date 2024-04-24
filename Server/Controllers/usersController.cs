@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using BlogExplorer.Data;
 using Server.Models;
 using System.Configuration;
+using Server.Helpers;
+using NuGet.Protocol;
 
 namespace Server.Controllers
 {
@@ -104,6 +106,9 @@ namespace Server.Controllers
         {
             if (userObj == null)
                 return BadRequest();
+
+            // Hashing the password
+            userObj.Password = PasswordHasher.HashPassword(userObj.Password);
 
             await _context.Users.AddAsync(userObj);
             await _context.SaveChangesAsync();

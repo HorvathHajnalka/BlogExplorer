@@ -12,11 +12,12 @@ namespace Server.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             // drop tables from the older database version
-            migrationBuilder.Sql("DROP TABLE IF EXISTS [comments]");
-            migrationBuilder.Sql("DROP TABLE IF EXISTS [favorite_topics]");
-            migrationBuilder.Sql("DROP TABLE IF EXISTS [users]");
-            migrationBuilder.Sql("DROP TABLE IF EXISTS [topics]");
-            migrationBuilder.Sql("DROP TABLE IF EXISTS [topic_types]");
+            migrationBuilder.Sql("DROP TABLE IF EXISTS [Comments]");
+            migrationBuilder.Sql("DROP TABLE IF EXISTS [FavoriteTopics]");
+            migrationBuilder.Sql("DROP TABLE IF EXISTS [Topics]");
+            migrationBuilder.Sql("DROP TABLE IF EXISTS [TopicTypes]");
+
+            migrationBuilder.Sql("DROP TABLE IF EXISTS [Users]");
 
 
             migrationBuilder.CreateTable(
@@ -40,7 +41,9 @@ namespace Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
+                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -154,10 +157,10 @@ namespace Server.Migrations
                 name: "Topics");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "TopicTypes");
 
             migrationBuilder.DropTable(
-                name: "TopicTypes");
+                name: "Users");
         }
     }
 }
