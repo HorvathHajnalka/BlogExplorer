@@ -44,7 +44,7 @@ export class AddEditUserComponent {
       name: this.name,
       password: this.password
     };
-    this.service.addUser(user).subscribe(res => {
+    this.service.signUp(user).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
         closeModalBtn.click(); // Programmatically clicks to close modal

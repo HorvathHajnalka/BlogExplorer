@@ -1,4 +1,4 @@
-<button (click)="logOut()" class="btn btn-primary">Log out</button>
+<button (click)="logOut()" class="custom-button" *ngIf="router.url !== '/login' && router.url !== '/registration'">Log out</button>
 <router-outlet></router-outlet>
 
 <!-- The router-outlet directive acts as a placeholder that Angular dynamically fills based on the current router state. 
