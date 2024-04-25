@@ -6,6 +6,7 @@ import { TopicComponent } from './topic/topic.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { Title } from '@angular/platform-browser'; 
+import { BlogApiService } from './blog-api.service';
 
 
 @Component({
@@ -18,10 +19,14 @@ import { Title } from '@angular/platform-browser';
 export class AppComponent implements OnInit {
   title = 'angular17-blogexplorer-api'; // Property for the application's title
 
-  constructor(private titleService: Title) { } // Inject the Title service
+  constructor(private titleService: Title, private service: BlogApiService) { } // Inject the Title service
 
   ngOnInit() {
     this.titleService.setTitle('BlogExplorer'); // Set the browser tab title
+  }
+
+  logOut(){
+    this.service.signOut();
   }
 }
 

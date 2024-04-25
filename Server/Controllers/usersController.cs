@@ -209,11 +209,13 @@ namespace Server.Controllers
             // Serialize the JWT token to a string and return it
             return jwtTokenHandler.WriteToken(token);
         }
+
+        /*
         [HttpGet]
         public async Task<ActionResult<User>> GetAllUsers()
         {
             return Ok(await _context.Users.ToListAsync());
-        }
+        }*/
     }
 
  }

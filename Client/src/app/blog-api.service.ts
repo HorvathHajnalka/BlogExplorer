@@ -1,6 +1,8 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
 
 // Marks the class as one that participates in the dependency injection system.
 // The providedIn: 'root' metadata option means that the BlogApiService is available throughout the application.
@@ -13,7 +15,11 @@ export class BlogApiService {
   readonly blogAPIUrl = "https://localhost:7111/api";
 
   // Injecting the HttpClient service into this service, enabling HTTP requests.
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
 
   // --------------------------API CALLS FOR TOPIC------------------------------------------------------------------------
@@ -82,20 +88,31 @@ export class BlogApiService {
   signUp(data:any){
     return this.http.post<any>(this.blogAPIUrl + `/Users/register`, data);
   }
+  signOut(){
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.clear();
+      this.router.navigate(['login'])
+    }
+  }
   login(data: any){
     return this.http.post<any>(this.blogAPIUrl + `/Users/authenticate`, data);
   }
 
-  storeToken(tokenValue: string){
-    localStorage.setItem('token', tokenValue);
+  storeToken(tokenValue: string) {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('token', tokenValue);
+    }
   }
 
-  getToken(){
-    return localStorage.getItem('token');
+  getToken() {
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('token');
+    }
+    return null;
   }
 
-  isLoggedIn(): boolean{
-      return !localStorage.getItem('token')
+  isLoggedIn(): boolean {
+    return isPlatformBrowser(this.platformId) && !!this.getToken();
   }
 
 }
