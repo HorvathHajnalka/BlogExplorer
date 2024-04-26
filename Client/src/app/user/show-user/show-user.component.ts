@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { BlogApiService } from '../../blog-api.service';
 import { CommonModule } from '@angular/common'; 
 import { AddEditUserComponent } from '../add-edit-user/add-edit-user.component';
+import { switchMap } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
 
 // Decorator that marks a class as an Angular component, providing template and style information.
 @Component({
   selector: 'app-show-user', // The CSS selector that identifies this component in a template
   standalone: true, // Marks this component as standalone, meaning it can be imported without needing to be declared in a module.
-  imports: [CommonModule, AddEditUserComponent], // Imports CommonModule for common directives like ngIf, ngFor, etc.
+  imports: [CommonModule, AddEditUserComponent, FormsModule], // Imports CommonModule for common directives like ngIf, ngFor, etc.
   templateUrl: './show-user.component.html', // Location of the component's template file.
   styleUrls: ['./show-user.component.css'] // Location of the component's private CSS styles.
 })
@@ -16,13 +18,15 @@ export class ShowUserComponent implements OnInit{ // The component class that im
 
   // Properties to hold observables for users list
   userList$!:Observable<any[]>; // Observable to hold the list of users, fetched from the BlogApiService
+  searchTerm: string = '';
+  filteredUserList$: Observable<any[]> | undefined;
 
-  // Constructor that injects the BlogApiService for fetching data
   constructor(private service:BlogApiService) {}
 
   ngOnInit(): void {
     // On component initialization, fetch the user list from the BlogApiService and assign it to the userList$ observable.
     this.userList$ = this.service.getUserList();
+    this.searchByUsername();
   }
 
    // Component properties related to UI state.
@@ -68,7 +72,8 @@ export class ShowUserComponent implements OnInit{ // The component class that im
              showDeleteSuccess.style.display = "none"; // Hide success message after 4 seconds.
            }
          }, 4000);
-         this.userList$ = this.service.getUserList(); // Refresh the user list.
+         this.searchByUsername();
+         //this.userList$ = this.service.getUserList(); // Refresh the user list.
        });
      }
    }
@@ -78,5 +83,25 @@ export class ShowUserComponent implements OnInit{ // The component class that im
    modalClose() {
      this.activateAddEditUserComponent = false; // Hide the modal.
      this.userList$ = this.service.getUserList(); // Refresh the user list.
+     this.searchByUsername();
    }
- }
+
+   searchByUsername() {
+    if (this.searchTerm.trim() !== '') {
+      this.filteredUserList$ = this.service.getUserList().pipe(
+        switchMap(users => {
+          return of(users.filter(item => {
+            return item.username.toLowerCase().includes(this.searchTerm.toLowerCase());
+          }));
+        })
+      );
+      return;
+    }
+    this.filteredUserList$ = this.service.getUserList();
+  }
+
+ clearSearchTerm(): void {
+  this.searchTerm = ''; // Clear the search term
+  this.searchByUsername();
+  }
+}

@@ -1,10 +1,22 @@
+<!-- Load icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <!-- Button to open modal for adding a new user -->
 <button type="button" class="btn btn-primary float-end m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modalAdd()">
     + Add New User
   </button>
-  
+
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Search by username..." [(ngModel)]="searchTerm">
+    <button class="btn btn-outline-primary me-2 mb-1" (click)="searchByUsername()" data-bs-toggle="modal" data-bs-target="#searchModal">
+      <i class="fa fa-search"></i>
+    </button>
+    <button class="btn btn-outline-danger mb-1" (click)="clearSearchTerm()">
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
   <br>
-  
+
   <!-- Table displaying users with dynamic data binding using Angular's *ngFor directive to iterate over userList$ observable -->
   <table class="table table-striped">
     <thead>
@@ -15,7 +27,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of userList$ | async"> <!-- Asynchronously receive the users list -->
+      <tr *ngFor="let item of filteredUserList$ | async"> <!-- Asynchronously receive the users list -->
         <td>{{ item.userId}}</td>
         <td>{{ item.username }}</td>
         <td>{{ item.name }}</td>

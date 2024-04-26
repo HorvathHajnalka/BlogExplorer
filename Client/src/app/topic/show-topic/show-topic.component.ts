@@ -111,15 +111,12 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
       this.filteredTopicList$ = this.service.getTopicList().pipe(
         switchMap(topics => {
           return of(topics.filter(item => {
-            // Szűrés a keresési kifejezés alapján
             return item.name.toLowerCase().includes(this.searchTerm.toLowerCase());
           }));
         })
       );
       return;
     }
-  
-    // Ha nincs beírt keresési kifejezés, csak a témátípus alapján szűrünk
     if (this.selectedTopicType !== 'all') {
       this.filteredTopicList$ = this.service.getTopicList().pipe(
         switchMap(topics => {
@@ -134,8 +131,6 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
       );
       return;
     }
-  
-    // Ha nincs beírt keresési kifejezés és a témátípus is 'all'
     this.filteredTopicList$ = this.service.getTopicList();
   }
    
@@ -146,8 +141,4 @@ clearSearchTerm(): void {
   this.searchByTopic();
 }
 
-  
-
-  
-  
  }
