@@ -1,23 +1,37 @@
 <!-- Load icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<!-- Button to open modal for adding a new topic -->
-<button type="button" class="btn btn-primary float-end m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modalAdd()">
-  + Add New Topic
-</button>
 
-<div class="input-group mb-3">
-  <input type="text" class="form-control" placeholder="Search by topic type..." [(ngModel)]="searchTerm">
-  <button class="btn btn-outline-primary me-2 mb-1" (click)="searchByTopicType()" data-bs-toggle="modal" data-bs-target="#searchModal">
-    <i class="fa fa-search"></i>
-  </button>
-  <button class="btn btn-outline-danger mb-1" (click)="clearSearchTerm()">
-    <i class="fa fa-times"></i>
-  </button>
+<div class="row">
+  <div class="col-md-12 mb-3">
+    <!-- Button to open modal for adding a new topic -->
+    <div class="offset-md-9 col-md-3">
+      <button type="button" class="btn btn-primary float-end m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modalAdd()">
+        + Add New Topic
+      </button>
+    </div>
+  </div>
 </div>
-<br>
 
-
+<div class="row">
+  <div class="col-md-9 mb-3"> <!-- 80% width -->
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Search by topic type..." [(ngModel)]="searchTerm">
+      <button class="btn btn-outline-primary" (click)="searchByTopic()" data-bs-toggle="modal" data-bs-target="#searchModal">
+        <i class="fa fa-search"></i>
+      </button>
+      <button class="btn btn-outline-danger" (click)="clearSearchTerm()">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+  </div>
+  <div class="col-md-3"> <!-- 20% width -->
+    <select class="form-select mb-3" [(ngModel)]="selectedTopicType" (change)="searchByTopic()">
+      <option value="all">All types</option>
+      <option *ngFor="let type of topicTypesList" [value]="type.name">{{ type.name }}</option>
+    </select>
+  </div>
+</div>
 
 
 <!-- Table displaying topics with dynamic data binding using Angular's *ngFor directive to iterate over topicList$ observable -->
