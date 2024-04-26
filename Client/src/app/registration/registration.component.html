@@ -6,6 +6,7 @@
             <div class="offset-md-2 col-lg-5 col-md-7 offset-lg-4 offset-md-3">
                 <div class="panel border bg-white">
                     <div class="panel-heading">
+                        <br>
                         <h3 class="pt-3 font-weight-bold">Registration</h3>
                     </div>
                     <div class="panel-body p-3">
@@ -40,6 +41,14 @@
                                 </div>
                             </div>
                             <small *ngIf="registrationForm.controls['password2'].dirty && registrationForm.hasError('required','password2')" class="text-danger">Password is required! </small>
+                            <div *ngIf="registrationError" style="color: red;">
+                                <br>
+                                {{ registrationError }}
+                            </div>
+                            <div *ngIf="registrationForm.hasError('passwordMismatch')" class="error" style="color: red;">
+                                <br>
+                                The passwords do not match.
+                              </div>
                             <button (click)="onRegister()" type="submit" class="btn btn-primary btn-block mt-4 w-100">Sign Up</button>
                             <div class="text-center pt-4 text-muted">Already have account? 
                                 <a id="login" routerLink="/login" routerLinkActive="active" exact>Login</a>

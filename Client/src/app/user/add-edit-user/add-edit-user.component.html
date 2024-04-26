@@ -1,0 +1,33 @@
+<!-- Form structure for adding or editing users -->
+<form>
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <!-- Input bound to the 'username' property in the component, using two-way binding with ngModel -->
+        <input type="text" class="form-control" [(ngModel)]="username" name="username">  
+    </div>
+
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <!-- Input bound to the 'name' property in the component, using two-way binding with ngModel -->
+        <input type="text" class="form-control" [(ngModel)]="name" name="name">  
+    </div>
+
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <!-- Input for the user password, using two-way binding with ngModel -->
+        <input type="password" class="form-control" [(ngModel)]="password" name="password">  
+    </div>
+
+    <!-- Conditional button to add a new user -->
+    <!-- Only shown if user.userId is 0 (i.e., no existing user ID is present) -->
+    <button (click)="addUser()" *ngIf="user.userId==0" class="btn btn-primary">
+        Add
+    </button>
+
+    <!-- Function to modify users data - REMOVED-->
+    <!--
+    <button (click)="updateUser()" *ngIf="user.userId!=0" class="btn btn-primary">
+        Update
+    </button>
+    -->
+</form>
