@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { BlogApiService } from '../../blog-api.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-edit-topic',

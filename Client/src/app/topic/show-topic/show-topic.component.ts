@@ -5,6 +5,7 @@ import { BlogApiService } from '../../blog-api.service';
 import { CommonModule } from '@angular/common'; 
 import { AddEditTopicComponent } from '../add-edit-topic/add-edit-topic.component';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 // Decorator that marks a class as an Angular component, providing template and style information.
 @Component({
@@ -26,7 +27,7 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
   topicTypesMap:Map<number, string> = new Map()
 
   // Constructor that injects the BlogApiService for fetching data
-  constructor(private service:BlogApiService) {}
+  constructor(private service:BlogApiService, private router: Router) {}
 
   ngOnInit(): void {
     // On component initialization, fetch the topic list from the BlogApiService and assign it to the topicList$ observable.
@@ -103,32 +104,35 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
      });
    }
 
-searchByTopicType() {
-  if (this.searchTerm.trim() === '') {
-    this.filteredTopicList$ = this.service.getTopicList();
-    return;
+  searchByTopicType() {
+    if (this.searchTerm.trim() === '') {
+      this.filteredTopicList$ = this.service.getTopicList();
+      return;
+    }
+
+    this.filteredTopicList$ = this.service.getTopicList().pipe(
+      switchMap(topics => {
+        return of(topics.filter(item => {
+          const topicType = this.topicTypesMap.get(item.topicTypeId);
+          if (topicType) {
+            return topicType.toLowerCase().startsWith(this.searchTerm.toLowerCase());
+          }
+          return false;
+        }));
+      })
+    );
   }
 
-  this.filteredTopicList$ = this.service.getTopicList().pipe(
-    switchMap(topics => {
-      return of(topics.filter(item => {
-        const topicType = this.topicTypesMap.get(item.topicTypeId);
-        if (topicType) {
-          return topicType.toLowerCase().startsWith(this.searchTerm.toLowerCase());
-        }
-        return false;
-      }));
-    })
-  );
-}
+  clearSearchTerm(): void {
+    this.searchTerm = ''; // Clear the search term
+    this.searchByTopicType();
+  }
 
-clearSearchTerm(): void {
-  this.searchTerm = ''; // Clear the search term
-  this.searchByTopicType();
-}
-
-  
-
-  
+  // Method for open the topic in a new page
+  viewTopic(topic: any) {
+    console.log('Navigating to topic:', topic);
+    const url = `/topic/${topic.topicId}`;
+    this.router.navigateByUrl(url);
+  } 
   
  }

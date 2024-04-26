@@ -28,3 +28,8 @@
     50% { opacity: 1; } /* Fade in to full visibility halfway through the animation */
     100% { opacity: 0; } /* Fade out to full invisibility by the end of the animation */
 }
+
+/*It indicates the clickability of the rows*/
+tr:hover {
+    cursor: pointer;
+  }
