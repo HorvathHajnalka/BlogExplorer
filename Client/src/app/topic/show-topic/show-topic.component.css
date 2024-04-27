@@ -29,6 +29,20 @@
     100% { opacity: 0; } /* Fade out to full invisibility by the end of the animation */
 }
 
+.show-topic {
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 40px;
+  }
+
+.button{
+    margin-right: 30px;
+  }
+
+.table{
+    margin-top: 20px;
+}
+
 /*It indicates the clickability of the rows*/
 tr:hover {
     cursor: pointer;

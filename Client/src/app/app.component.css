@@ -2,12 +2,14 @@
     padding: 10px 20px;
     background-color: #ffffff;
     border: none;
-    color: #000000;
+    color: #005cde;
     text-decoration: bold;
     border-radius: 5px;
+    font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin: 5px; 
+    margin-top: 7px;
+    margin-right: 10px;
     position: absolute; 
     top: 0; 
     right: 0;
@@ -17,3 +19,12 @@
     background-color: #ffffff; 
   }
   
+  .navbar-brand {
+    margin-left: 15px;
+  }
+
+  .nav-item {
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }

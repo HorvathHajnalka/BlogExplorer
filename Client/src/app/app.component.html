@@ -1,32 +1,27 @@
 <router-outlet></router-outlet>
-
-<div class="navbar" *ngIf="router.url !== '/login' && router.url !== '/registration'">
-     
-
-     <!-- The router-outlet directive acts as a placeholder that Angular dynamically fills based on the current router state. 
+<!-- The router-outlet directive acts as a placeholder that Angular dynamically fills based on the current router state. 
           When the user navigates to a particular route, Angular loads the corresponding component into this outlet. -->
 
+<div class="navbar" *ngIf="router.url !== '/login' && router.url !== '/registration'">
 
      <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
-     <a class="navbar-brand" href="#">BlogExplorer</a>
+     <a class="navbar-brand" routerLink="/topics" routerLinkActive="active">BlogExplorer</a>
      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
      <span class="navbar-toggler-icon"></span>
      </button>
      <div class="collapse navbar-collapse" id="navbarText">
      <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link" routerLink="/topics" routerLinkActive="active" >Topics <span class="sr-only">(current)</span></a>
           </li>
+          <li class="nav-item active">
+               <a class="nav-link" routerLink="/topics" routerLinkActive="active" >Favourites <span class="sr-only">(current)</span></a>
+               </li>
           <li class="nav-item">
-          <a class="nav-link" href="#">Features</a>
+          <a class="nav-link" routerLink="/users" routerLinkActive="active">Users</a>
           </li>
-          <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
-          </li>
+          
      </ul>
-     <span class="navbar-text">
-          Navbar text with an inline element
-     </span>
      <button (click)="logOut()" class="custom-button" >Log out</button>
      </div>
      </nav>

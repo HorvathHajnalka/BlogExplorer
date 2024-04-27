@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { ShowTopicComponent } from './topic/show-topic/show-topic.component';
 import { TopicComponent } from './topic/topic.component';
-import { MainPageComponent } from './main-page/main-page.component';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { Title } from '@angular/platform-browser'; 
 import { BlogApiService } from './blog-api.service';
@@ -15,7 +14,7 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
 @Component({
   selector: 'app-root', // The component's CSS selector
   standalone: true, // Marks the component as standalone
-  imports: [RouterOutlet, ShowTopicComponent, TopicComponent, HttpClientModule, RouterLink, RouterLinkActive, MainPageComponent, CommonModule], // Imports necessary modules and components
+  imports: [RouterOutlet, ShowTopicComponent, TopicComponent, HttpClientModule, RouterLink, RouterLinkActive, CommonModule], // Imports necessary modules and components
   providers:[{provide:HTTP_INTERCEPTORS, useClass:TokenInterceptor, multi: true}],
   templateUrl: './app.component.html', // The location of the component's template file
   styleUrls: ['./app.component.css'] // The location of the component's private CSS styles

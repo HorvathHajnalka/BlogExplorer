@@ -63,12 +63,14 @@ export class LoginComponent {
         next: (res) => {
           this.loginForm.reset();
           this.service.storeToken(res.token);
-          this.router.navigate(['main-page']);
+          this.router.navigate(['topics']);
 
           // popup message, when login was successful
           this.snackBar.open(res.message, '', {
             duration: 3000,  // popup duration (milliseconds)
-            verticalPosition: 'top' // popup position
+            // popup position
+            verticalPosition: 'top',
+            panelClass: 'custom-snackbar' 
           });
           
         },

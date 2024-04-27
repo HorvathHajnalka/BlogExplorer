@@ -1,21 +1,41 @@
 <!-- Load icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<!-- Button to open modal for adding a new user -->
-<button type="button" class="btn btn-primary float-end m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modalAdd()">
-    + Add New User
-  </button>
 
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Search by username..." [(ngModel)]="searchTerm">
-    <button class="btn btn-outline-primary me-2 mb-1" (click)="searchByUsername()" data-bs-toggle="modal" data-bs-target="#searchModal">
-      <i class="fa fa-search"></i>
-    </button>
-    <button class="btn btn-outline-danger mb-1" (click)="clearSearchTerm()">
-      <i class="fa fa-times"></i>
-    </button>
+<div class="show-user">
+
+  <div class="row">
+    <div class="col-md-2 mb-3"> <!-- 20% width -->
+      <!-- Button to open modal for adding a new user -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modalAdd()" style="width: 100%;">
+        + Add New User
+      </button>
+    </div>
+    <div class="col-md-7 mb-3"> <!-- 60% width -->
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search by username..." [(ngModel)]="searchTerm">
+        <button class="btn btn-outline-primary" (click)="searchByUsername()" data-bs-toggle="modal" data-bs-target="#searchModal">
+          <i class="fa fa-search"></i>
+        </button>
+        <button class="btn btn-outline-danger" (click)="clearSearchTerm()">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+    </div>
+    <div class="col-md-3"> <!-- 20% width -->
+      <!-- <select class="form-select mb-3" [(ngModel)]="selectedUserType"</select> (change)="searchByUsername()" style="width: 100%;">
+        <option value="all">All types</option>
+        <option *ngFor="let type of userTypesList" [value]="type.name">{{ type.name }}</option>
+      </select>-->
+      <select class="form-select mb-3" >
+        <option value="all">All types</option>
+        <option>todo</option>
+      </select>
+    </div>
   </div>
-  <br>
+
+
+
 
   <!-- Table displaying users with dynamic data binding using Angular's *ngFor directive to iterate over userList$ observable -->
   <table class="table table-striped">
@@ -79,4 +99,4 @@
       </div>
     </div>
   </div>
-  
+</div>
