@@ -22,6 +22,7 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
   topicTypesList$!:Observable<any[]>; // Observable to hold the list of topic types, if needed in future expansion.
   topicTypesList:any=[]; // Array to hold topic types, currently not populated in ngOnInit.
   searchTerm: string = '';
+  selectedTopicType: string = 'all';
   filteredTopicList$: Observable<any[]> | undefined;
   // Map to display data associated with foreign keys. Maps topic type IDs to their string representations.
   topicTypesMap:Map<number, string> = new Map()
@@ -34,7 +35,7 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
     this.topicList$ = this.service.getTopicList();
     this.topicTypesList$ = this.service.getTopicTypeList();
     this.refreshTopicTypesMap();
-    this.searchByTopicType();
+    this.searchByTopic();
   }
 
    // Component properties related to UI state.
@@ -80,7 +81,7 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
              showDeleteSuccess.style.display = "none"; // Hide success message after 4 seconds.
            }
          }, 4000);
-         this.searchByTopicType();
+         this.searchByTopic();
        });
      }
    }
@@ -90,7 +91,7 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
    modalClose() {
      this.activateAddEditTopicComponent = false; // Hide the modal.
      this.topicList$ = this.service.getTopicList(); // Refresh the topic list.
-     this.searchByTopicType();
+     this.searchByTopic();
    }
  
 
@@ -103,36 +104,47 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
        }
      });
    }
+   
 
-  searchByTopicType() {
-    if (this.searchTerm.trim() === '') {
-      this.filteredTopicList$ = this.service.getTopicList();
+   searchByTopic() {
+    if (this.searchTerm.trim() !== '') {
+      this.filteredTopicList$ = this.service.getTopicList().pipe(
+        switchMap(topics => {
+          return of(topics.filter(item => {
+            return item.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+          }));
+        })
+      );
       return;
     }
-
-    this.filteredTopicList$ = this.service.getTopicList().pipe(
-      switchMap(topics => {
-        return of(topics.filter(item => {
-          const topicType = this.topicTypesMap.get(item.topicTypeId);
-          if (topicType) {
-            return topicType.toLowerCase().startsWith(this.searchTerm.toLowerCase());
-          }
-          return false;
-        }));
-      })
-    );
+    if (this.selectedTopicType !== 'all') {
+      this.filteredTopicList$ = this.service.getTopicList().pipe(
+        switchMap(topics => {
+          return of(topics.filter(item => {
+            const topicType = this.topicTypesMap.get(item.topicTypeId);
+            if (topicType) {
+              return topicType.toLowerCase() === this.selectedTopicType.toLowerCase();
+            }
+            return false;
+          }));
+        })
+      );
+      return;
+    }
+    this.filteredTopicList$ = this.service.getTopicList();
   }
+   
 
-  clearSearchTerm(): void {
-    this.searchTerm = ''; // Clear the search term
-    this.searchByTopicType();
-  }
+	clearSearchTerm(): void {
+	  this.searchTerm = ''; // Clear the search term
+	  this.selectedTopicType = 'all';
+	  this.searchByTopic();
+	}
 
-  // Method for open the topic in a new page
+   // Method for open the topic in a new page
   viewTopic(topic: any) {
     console.log('Navigating to topic:', topic);
     const url = `/topic/${topic.topicId}`;
     this.router.navigateByUrl(url);
   } 
-  
  }
