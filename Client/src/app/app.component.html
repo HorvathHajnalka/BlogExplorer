@@ -1,7 +1,34 @@
-<button (click)="logOut()" class="custom-button" *ngIf="router.url !== '/login' && router.url !== '/registration'">Log out</button>
 <router-outlet></router-outlet>
 
-<!-- The router-outlet directive acts as a placeholder that Angular dynamically fills based on the current router state. 
-     When the user navigates to a particular route, Angular loads the corresponding component into this outlet. -->
+<div class="navbar" *ngIf="router.url !== '/login' && router.url !== '/registration'">
+     
+
+     <!-- The router-outlet directive acts as a placeholder that Angular dynamically fills based on the current router state. 
+          When the user navigates to a particular route, Angular loads the corresponding component into this outlet. -->
 
 
+     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+     <a class="navbar-brand" href="#">BlogExplorer</a>
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+     <span class="navbar-toggler-icon"></span>
+     </button>
+     <div class="collapse navbar-collapse" id="navbarText">
+     <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" href="#">Features</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" href="#">Pricing</a>
+          </li>
+     </ul>
+     <span class="navbar-text">
+          Navbar text with an inline element
+     </span>
+     <button (click)="logOut()" class="custom-button" >Log out</button>
+     </div>
+     </nav>
+
+</div>
