@@ -22,6 +22,9 @@
   .navbar-brand {
     margin-left: 15px;
   }
+  .navbar{
+    height: 55px;
+  }
 
   .nav-item {
     margin-top: 5px;
