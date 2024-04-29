@@ -39,6 +39,10 @@ export class BlogApiService {
     return this.http.post(this.blogAPIUrl + '/Topics', data);
   }
 
+  getTopic(id: number | string) {
+    return this.http.get(this.blogAPIUrl + `/Topics/${id}`);
+  }
+
   // use `` ( Alt Gr + 7 ) instead of ''
   updateTopic(id:number|string, data:any){
     return this.http.put(this.blogAPIUrl + `/Topics/${id}`, data);
