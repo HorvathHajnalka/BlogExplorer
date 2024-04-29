@@ -15,9 +15,6 @@
     right: 0;
   }
   
-  .custom-button:hover {
-    background-color: #ffffff; 
-  }
   
   .navbar-brand {
     margin-left: 15px;
@@ -30,4 +27,10 @@
     margin-top: 5px;
     margin-left: 5px;
     margin-right: 5px;
+  }
+
+  .container {
+    font-weight: bold;
+    margin-top: 100px;
+    
   }

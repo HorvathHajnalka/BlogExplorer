@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { BlogApiService } from '../../blog-api.service';
+import { BlogApiService } from '../../services/blog-api.service';
 import { CommonModule } from '@angular/common'; 
 import { AddEditUserComponent } from '../add-edit-user/add-edit-user.component';
 import { switchMap } from 'rxjs/operators';

@@ -3,9 +3,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, Event, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
-import { BlogApiService } from '../blog-api.service'; 
+import { BlogApiService } from '../../services/blog-api.service'; 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class LoginComponent {
     constructor(
       private router: Router,
       private fb: FormBuilder,
-      private service: BlogApiService,
+      private service: AuthService,
       private snackBar: MatSnackBar
       ) { } // Injects the Router service for navigation and routing event handling
   

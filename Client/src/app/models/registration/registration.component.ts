@@ -3,9 +3,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, Event, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { BlogApiService } from '../blog-api.service';
+import { BlogApiService } from '../../services/blog-api.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; 
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   if (control instanceof FormGroup) {
@@ -43,7 +44,7 @@ export class RegistrationComponent {
   constructor(
     private router: Router, 
     private fb: FormBuilder, 
-    private service: BlogApiService,
+    private service: AuthService,
     private snackBar: MatSnackBar
   ) { } // Injects the Router service for navigation and routing event handling
 

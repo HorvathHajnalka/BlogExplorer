@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { TopicComponent } from './topic/topic.component';
 import { UserComponent } from './user/user.component';
-import { LoginComponent } from './login/login.component';
-import { RegistrationComponent } from './registration/registration.component';
+import { LoginComponent } from './models/login/login.component';
+import { RegistrationComponent } from './models/registration/registration.component';
 import { AuthGuard } from './guards/auth.guard';
 import { SingleTopicComponent } from './topic/single-topic/single-topic.component';
 

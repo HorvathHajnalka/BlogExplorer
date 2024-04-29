@@ -22,8 +22,16 @@
           </li>
           
      </ul>
-     <button (click)="logOut()" class="custom-button" *ngIf="router.url !== '/login' && router.url !== '/registration'" >Log out</button>
+          
+     <button *ngIf="router.url !== '/login' && router.url !== '/registration'" (click)="logOut()" class="custom-button">Log out</button>
+
      </div>
+
+     <span class="container" *ngIf="router.url !== '/login' && router.url !== '/registration'">Logged in as {{userName}}</span>
+     
      </nav>
 
+     
+
 </div>
+

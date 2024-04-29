@@ -5,10 +5,12 @@ import { ShowTopicComponent } from './topic/show-topic/show-topic.component';
 import { TopicComponent } from './topic/topic.component';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { Title } from '@angular/platform-browser'; 
-import { BlogApiService } from './blog-api.service';
+import { BlogApiService } from './services/blog-api.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TokenInterceptor } from './interceptors/token.interceptor';
+import { AuthService } from './services/auth.service';
+import { UserStoreService } from './services/user-store.service';
 
 
 @Component({
@@ -22,14 +24,22 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
 export class AppComponent implements OnInit {
   title = 'angular17-blogexplorer-api'; // Property for the application's title
 
-  constructor(private titleService: Title, private service: BlogApiService, public router: Router, private http:HttpClient) { } // Inject the Title service
+  public userName:any = [];
+
+  constructor(private titleService: Title, private auth: AuthService, private userStore: UserStoreService, public router: Router, private http:HttpClient) { } // Inject the Title service
 
   ngOnInit() {
     this.titleService.setTitle('BlogExplorer'); // Set the browser tab title
+
+    this.userStore.getUserNameFromStore()
+    .subscribe(val=>{
+      let userNameFromToken = this.auth.getUserNameFromToken();
+      this.userName = val || userNameFromToken
+    })
   }
 
   logOut(){
-    this.service.signOut();
+    this.auth.signOut();
   }
 }
 
