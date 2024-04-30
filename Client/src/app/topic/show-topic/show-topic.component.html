@@ -41,11 +41,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of filteredTopicList$ | async" (click)="viewTopic(item)">
-        <td>{{ item.topicId }}</td>
-        <td>{{ item.name }}</td>
-        <td>{{ topicTypesMap.get(item.topicTypeId) }}</td> <!-- Display topic type using map to resolve IDs to names -->
-        <td>{{ item.description }}</td>
+      <tr *ngFor="let item of filteredTopicList$ | async">
+        <td (click)="viewTopic(item)">{{ item.topicId }}</td>
+        <td (click)="viewTopic(item)">{{ item.name }}</td>
+        <td (click)="viewTopic(item)">{{ topicTypesMap.get(item.topicTypeId) }}</td> <!-- Display topic type using map to resolve IDs to names -->
+        <td (click)="viewTopic(item)">{{ item.description }}</td>
         <div class="admin-view" *ngIf="appComponent.role === 'admin'">
         <td>
           <!-- Edit button with embedded SVG icon, triggers modal for editing -->

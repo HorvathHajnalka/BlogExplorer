@@ -89,6 +89,24 @@ export class BlogApiService {
     return this.http.delete(this.blogAPIUrl + `/Users/${id}`);
   }
 
-  
+  //----------------------------------API CALLS FOR COMMENTS----------------------------------
+  getCommentList(): Observable<any[]> {
+    return this.http.get<any>(this.blogAPIUrl + '/Comments');
+  }
 
+  addComment(data:any){
+    return this.http.post(this.blogAPIUrl + '/Comments', data);
+  }
+
+  getComment(id: number | string) {
+    return this.http.get(this.blogAPIUrl + `/Comments/${id}`);
+  }
+
+  updateComment(id:number|string, data:any){
+    return this.http.put(this.blogAPIUrl + `/Comments/${id}`, data);
+  }
+
+  deleteComment(id:number|string){
+    return this.http.delete(this.blogAPIUrl + `/Comments/${id}`);
+  }
 }

@@ -1,3 +1,18 @@
-<div>
-    <p>single-topic works!</p>
-</div>
+<p>single-topic works!</p>
+<p>single-topic works!</p>
+<div class="favourite-checkbox-div">
+    <label for="fav-chechbox">Favourite</label>
+    <input type="checkbox" id="fav-chechbox">
+</div>    
+
+<h2 class="text-center">{{ topic.name }}</h2>
+<p class="body">{{ topic.description }}</p>
+
+<div class="comments-section">
+    
+    <ul class="comment-list">
+      <li *ngFor="let comment of comments">comment.text</li>
+    </ul>
+    
+    <button class="comment-button">Comment</button>
+  </div>

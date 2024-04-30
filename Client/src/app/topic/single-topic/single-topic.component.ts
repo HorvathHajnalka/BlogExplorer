@@ -1,20 +1,19 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { BlogApiService } from '../../services/blog-api.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-single-topic',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './single-topic.component.html',
   styleUrl: './single-topic.component.css'
 })
 export class SingleTopicComponent {
   topicId!: number;
-  topicDetails: any;
+  topic: any;
 
-  constructor(private route: ActivatedRoute, private apiService: BlogApiService) {}
+  constructor(private route: ActivatedRoute, private service: BlogApiService) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -24,8 +23,8 @@ export class SingleTopicComponent {
   }
 
   loadTopicDetails() {
-    this.apiService.getTopic(this.topicId).subscribe(details => {
-      this.topicDetails = details;
+    this.service.getTopic(this.topicId).subscribe(details => {
+      this.topic = details;
     });
   }
 }
