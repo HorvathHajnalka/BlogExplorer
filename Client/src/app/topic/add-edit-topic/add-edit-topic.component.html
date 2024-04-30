@@ -1,5 +1,5 @@
 <!-- Form structure for adding or editing topics -->
-<form>
+<form *ngIf="appComponent.role === 'admin'">
     <div class="mb-3">
         <label for="name" class="form-label">Name</label>
         <!-- Input bound to the 'name' property in the component, using two-way binding with ngModel -->
@@ -24,16 +24,17 @@
         <input type="text" class="form-control" [(ngModel)]="description" name="description">  
     </div>
 
-    <!-- Conditional button to add a new topic -->
-    <!-- Only shown if topic.topicId is 0 (i.e., no existing topic ID is present) -->
-    <button (click)="addTopic()" *ngIf="topic.topicId==0" class="btn btn-primary">
-        Add
-    </button>
+        <!-- Conditional button to add a new topic -->
+        <!-- Only shown if topic.topicId is 0 (i.e., no existing topic ID is present) -->
+        <button   (click)="addTopic()" *ngIf="topic.topicId==0" class="btn btn-primary">
+            Add
+        </button>
 
-    <!-- Conditional button to update an existing topic -->
-    <!-- Only shown if topic.topicId is not 0 (i.e., an existing topic ID is present) -->
-    <button (click)="updateTopic()" *ngIf="topic.topicId!=0" class="btn btn-primary">
-        Update
-    </button>
+        <!-- Conditional button to update an existing topic -->
+        <!-- Only shown if topic.topicId is not 0 (i.e., an existing topic ID is present) -->
+        <button (click)="updateTopic()" *ngIf="topic.topicId!=0" class="btn btn-primary">
+            Update
+        </button>
+
 </form>
   
