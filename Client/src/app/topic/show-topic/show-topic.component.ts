@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { BlogApiService } from '../../services/blog-api.service';
@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { AddEditTopicComponent } from '../add-edit-topic/add-edit-topic.component';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AppComponent } from '../../app.component';
 
 // Decorator that marks a class as an Angular component, providing template and style information.
 @Component({
@@ -28,7 +29,7 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
   topicTypesMap:Map<number, string> = new Map()
 
   // Constructor that injects the BlogApiService for fetching data
-  constructor(private service:BlogApiService, private router: Router) {}
+  constructor(private service:BlogApiService, private router: Router , @Inject(AppComponent) public appComponent: AppComponent) {}
 
   ngOnInit(): void {
     // On component initialization, fetch the topic list from the BlogApiService and assign it to the topicList$ observable.

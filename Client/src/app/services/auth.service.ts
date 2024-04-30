@@ -106,4 +106,11 @@ export class AuthService {
   getTokenObservable(): Observable<string|null> {
     return this.tokenSubject.asObservable();
   }
+
+  isAdmin(){
+    if (this.getRoleFromToken() === 'admin'){
+      return true;
+    }
+    return false;
+  }
 }

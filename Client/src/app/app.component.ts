@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   title = 'angular17-blogexplorer-api'; // Property for the application's title
 
   public userName:any = [];
+  public role:any = [];
 
   constructor(private titleService: Title, private auth: AuthService, private userStore: UserStoreService, public router: Router, private http:HttpClient) { } // Inject the Title service
 
@@ -37,6 +38,12 @@ export class AppComponent implements OnInit {
       this.userName = val || userNameFromToken
     });
 
+    this.userStore.getRoleFromStore()
+    .subscribe(val=>{
+      let roleFromToken = this.auth.getRoleFromToken();
+      this.role = val || roleFromToken
+    });
+
     // Subscribe to AuthService for event loginChanged 
     this.auth.loginChanged.subscribe((loggedIn: boolean) => {
       if (loggedIn) {
@@ -44,8 +51,13 @@ export class AppComponent implements OnInit {
           let userNameFromToken = this.auth.getUserNameFromToken();
           this.userName = val || userNameFromToken;
         });
+        this.userStore.getRoleFromStore().subscribe(val=>{
+            let roleFromToken = this.auth.getRoleFromToken();
+            this.role = val || roleFromToken
+          });
       } else {
         this.userName = null;
+        this.role = null;
       }
     });
   }
