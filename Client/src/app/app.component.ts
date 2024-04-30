@@ -35,7 +35,19 @@ export class AppComponent implements OnInit {
     .subscribe(val=>{
       let userNameFromToken = this.auth.getUserNameFromToken();
       this.userName = val || userNameFromToken
-    })
+    });
+
+    // Subscribe to AuthService for event loginChanged 
+    this.auth.loginChanged.subscribe((loggedIn: boolean) => {
+      if (loggedIn) {
+        this.userStore.getUserNameFromStore().subscribe(val => {
+          let userNameFromToken = this.auth.getUserNameFromToken();
+          this.userName = val || userNameFromToken;
+        });
+      } else {
+        this.userName = null;
+      }
+    });
   }
 
   logOut(){
