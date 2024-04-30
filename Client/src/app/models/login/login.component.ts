@@ -7,6 +7,8 @@ import { BlogApiService } from '../../services/blog-api.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth.service';
+import { UserStoreService } from '../../services/user-store.service';
+
 
 
 @Component({
@@ -31,6 +33,7 @@ export class LoginComponent {
       private router: Router,
       private fb: FormBuilder,
       private service: AuthService,
+      private userStore: UserStoreService,
       private snackBar: MatSnackBar
       ) { } // Injects the Router service for navigation and routing event handling
   
@@ -64,6 +67,9 @@ export class LoginComponent {
         next: (res) => {
           this.loginForm.reset();
           this.service.storeToken(res.token);
+          let tokenPayload = this.service.decodedToken();
+          this.userStore.setUserNameForStore(tokenPayload.unique_name);
+          this.userStore.setRoleForStore(tokenPayload.role);
           this.router.navigate(['topics']);
 
           // popup message, when login was successful
