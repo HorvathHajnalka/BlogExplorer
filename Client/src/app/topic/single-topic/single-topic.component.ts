@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { BlogApiService } from '../../services/blog-api.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-single-topic',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './single-topic.component.html',
   styleUrl: './single-topic.component.css'
 })
