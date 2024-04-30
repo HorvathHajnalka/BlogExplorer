@@ -18,21 +18,24 @@
   
   .navbar-brand {
     margin-left: 15px;
+    z-index: 1000;
   }
   .navbar{
     height: 55px;
+    z-index: 1000;
   }
 
   .nav-item {
     margin-top: 5px;
     margin-left: 5px;
     margin-right: 5px;
+    z-index: 1000;
   }
 
   .container {
     font-weight: bold;
     margin-top: 100px;
-    
+    z-index: 1000;
   }
 
  

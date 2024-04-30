@@ -55,3 +55,7 @@
 tr:hover {
     cursor: pointer;
   }
+  
+.alert-success{
+    z-index: 10000;
+}
