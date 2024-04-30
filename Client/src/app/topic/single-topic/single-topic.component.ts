@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BlogApiService } from '../../blog-api.service';
+import { BlogApiService } from '../../services/blog-api.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
