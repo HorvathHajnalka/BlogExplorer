@@ -4,7 +4,7 @@
 <div class="show-topic">
 
   <div class="row">
-    <div class="col-md-2 mb-3"> <!-- 20% width -->
+    <div *ngIf="appComponent.role === 'admin'" class="col-md-2 mb-3"> <!-- 20% width -->
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modalAdd()" style="width: 100%;">
         + Add New Topic
       </button>
@@ -37,7 +37,7 @@
         <th>Name</th>
         <th>Type</th>
         <th>Description</th>
-        <th>Options</th>
+        <th *ngIf="appComponent.role === 'admin'">Options</th>
       </tr>
     </thead>
     <tbody>
@@ -46,6 +46,7 @@
         <td>{{ item.name }}</td>
         <td>{{ topicTypesMap.get(item.topicTypeId) }}</td> <!-- Display topic type using map to resolve IDs to names -->
         <td>{{ item.description }}</td>
+        <div class="admin-view" *ngIf="appComponent.role === 'admin'">
         <td>
           <!-- Edit button with embedded SVG icon, triggers modal for editing -->
           <button class="btn btn-outline-primary me-2 mb-1" (click)="modalEdit(item)" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -62,6 +63,7 @@
             </svg>
           </button>
         </td>
+        </div>
       </tr>
     </tbody>
   </table>

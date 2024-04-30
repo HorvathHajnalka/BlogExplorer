@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BlogApiService } from '../../services/blog-api.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AppComponent } from '../../app.component';
 
 @Component({
   selector: 'app-add-edit-topic',
@@ -17,7 +18,7 @@ export class AddEditTopicComponent {
   topicList$!: Observable<any[]>;
   topicTypesList$!: Observable<any[]>;
 
-  constructor(private service: BlogApiService) {}
+  constructor(private service: BlogApiService, @Inject(AppComponent) public appComponent: AppComponent) {}
 
   @Input() topic: any; // Input property to pass data into the component
   // Local properties to hold topic details
@@ -34,6 +35,7 @@ export class AddEditTopicComponent {
       this.name = this.topic.name;
       this.topicTypeId = this.topic.topicTypeId;
       this.description = this.topic.description;
+
     }
     // Fetches lists for topics and topic types from the API
     this.topicTypesList$ = this.service.getTopicTypeList();
