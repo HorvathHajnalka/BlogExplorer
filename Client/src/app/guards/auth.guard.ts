@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { BlogApiService } from '../blog-api.service';
+import { BlogApiService } from '../services/blog-api.service';
 import { NgToastService } from 'ng-angular-popup';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../services/auth.service';
 
 // guards return a true/false value based on conditions
 // if the return value is true it allows you to get access to certain links/activities
@@ -14,7 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class AuthGuard implements CanActivate {
   // Injecting BlogApiService
-  constructor(private service: BlogApiService, private router: Router, private snackBar: MatSnackBar) {}
+  constructor(private service: AuthService, private router: Router, private snackBar: MatSnackBar) {}
 
   // canActivate is an interface method which needs to be implemented
   // It determines if a route can be activated

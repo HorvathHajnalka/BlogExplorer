@@ -89,34 +89,6 @@ export class BlogApiService {
     return this.http.delete(this.blogAPIUrl + `/Users/${id}`);
   }
 
-  signUp(data:any){
-    return this.http.post<any>(this.blogAPIUrl + `/Users/register`, data);
-  }
-  signOut(){
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.clear();
-      this.router.navigate(['login'])
-    }
-  }
-  login(data: any){
-    return this.http.post<any>(this.blogAPIUrl + `/Users/authenticate`, data);
-  }
-
-  storeToken(tokenValue: string) {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('token', tokenValue);
-    }
-  }
-
-  getToken() {
-    if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem('token');
-    }
-    return null;
-  }
-
-  isLoggedIn(): boolean {
-    return isPlatformBrowser(this.platformId) && !!this.getToken();
-  }
+  
 
 }

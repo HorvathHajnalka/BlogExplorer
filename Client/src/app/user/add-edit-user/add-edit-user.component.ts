@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BlogApiService } from '../../blog-api.service';
+import { BlogApiService } from '../../services/blog-api.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-add-edit-user',
@@ -15,7 +16,7 @@ import { FormsModule } from '@angular/forms';
 export class AddEditUserComponent {
 
   userList$!: Observable<any[]>;
-  constructor(private service: BlogApiService) {}
+  constructor(private service: BlogApiService, private auth: AuthService) {}
   
   @Input() user: any; // Input property to pass data into the component
   // Local properties to hold user details
@@ -44,7 +45,7 @@ export class AddEditUserComponent {
       name: this.name,
       password: this.password
     };
-    this.service.signUp(user).subscribe(res => {
+    this.auth.signUp(user).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
         closeModalBtn.click(); // Programmatically clicks to close modal

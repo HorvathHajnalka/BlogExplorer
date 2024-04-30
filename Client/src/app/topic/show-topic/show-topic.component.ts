@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { BlogApiService } from '../../blog-api.service';
+import { BlogApiService } from '../../services/blog-api.service';
 import { CommonModule } from '@angular/common'; 
 import { AddEditTopicComponent } from '../add-edit-topic/add-edit-topic.component';
 import { FormsModule } from '@angular/forms';

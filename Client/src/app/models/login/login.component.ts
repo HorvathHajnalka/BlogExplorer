@@ -3,9 +3,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, Event, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
-import { BlogApiService } from '../blog-api.service'; 
+import { BlogApiService } from '../../services/blog-api.service'; 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../../services/auth.service';
+import { UserStoreService } from '../../services/user-store.service';
+
 
 
 @Component({
@@ -29,7 +32,8 @@ export class LoginComponent {
     constructor(
       private router: Router,
       private fb: FormBuilder,
-      private service: BlogApiService,
+      private service: AuthService,
+      private userStore: UserStoreService,
       private snackBar: MatSnackBar
       ) { } // Injects the Router service for navigation and routing event handling
   
@@ -63,12 +67,17 @@ export class LoginComponent {
         next: (res) => {
           this.loginForm.reset();
           this.service.storeToken(res.token);
-          this.router.navigate(['main-page']);
+          let tokenPayload = this.service.decodedToken();
+          this.userStore.setUserNameForStore(tokenPayload.unique_name);
+          this.userStore.setRoleForStore(tokenPayload.role);
+          this.router.navigate(['topics']);
 
           // popup message, when login was successful
           this.snackBar.open(res.message, '', {
             duration: 3000,  // popup duration (milliseconds)
-            verticalPosition: 'top' // popup position
+            // popup position
+            verticalPosition: 'top',
+            panelClass: 'custom-snackbar' 
           });
           
         },
