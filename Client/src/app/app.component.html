@@ -5,6 +5,7 @@
 <div class="navbar" >
 
      <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+
      <a class="navbar-brand" >BlogExplorer</a>
      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
      <span class="navbar-toggler-icon"></span>
@@ -20,18 +21,18 @@
           <li *ngIf="role === 'admin'" class="nav-item">
           <a class="nav-link" routerLink="/users" routerLinkActive="active">Users</a>
           </li>
+          <li>
+               <span class="navbar-text logged-in-text" *ngIf="router.url !== '/login' && router.url !== '/registration'">Logged in as {{userName}}</span>
+          </li>
           
-     </ul>
-          
-     <button *ngIf="router.url !== '/login' && router.url !== '/registration'" (click)="logOut()" class="custom-button">Log out</button>
+               </ul>
+               
+               <button *ngIf="router.url !== '/login' && router.url !== '/registration'" (click)="logOut()" class="custom-button">Log out</button>
+               
 
-     </div>
-
-     <span class="container" *ngIf="router.url !== '/login' && router.url !== '/registration'">Logged in as {{userName}}</span>
+          </div>          
      
-     </nav>
-
+     </nav>     
      
-
 </div>
 
