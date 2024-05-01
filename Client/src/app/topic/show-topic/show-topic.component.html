@@ -36,7 +36,6 @@
         <th>Id</th>
         <th>Name</th>
         <th>Type</th>
-        <th>Description</th>
         <th *ngIf="appComponent.role === 'admin'">Options</th>
       </tr>
     </thead>
@@ -45,7 +44,6 @@
         <td (click)="viewTopic(item)">{{ item.topicId }}</td>
         <td (click)="viewTopic(item)">{{ item.name }}</td>
         <td (click)="viewTopic(item)">{{ topicTypesMap.get(item.topicTypeId) }}</td> <!-- Display topic type using map to resolve IDs to names -->
-        <td (click)="viewTopic(item)">{{ item.description }}</td>
         <div class="admin-view" *ngIf="appComponent.role === 'admin'">
         <td>
           <!-- Edit button with embedded SVG icon, triggers modal for editing -->
