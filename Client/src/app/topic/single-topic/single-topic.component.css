@@ -1,0 +1,26 @@
+.body{
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.favourite-checkbox-div label {
+    padding-left: 5px; /* Hozzáad egy kis helyet a label bal oldalán */
+}
+
+
+.favourite-checkbox-div input[type="checkbox"] {
+    width: 20px; 
+    height: 20px;
+    padding: 5px;
+}
+
+.favourite-checkbox-div label{
+    padding: 5px;
+}
+
+.favourite-checkbox-div{    
+    text-align: right;
+    margin-right: 20px;
+    font-weight: bold;
+    font-size: large;
+}

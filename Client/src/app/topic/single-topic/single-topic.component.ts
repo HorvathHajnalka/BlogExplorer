@@ -27,5 +27,7 @@ export class SingleTopicComponent {
       this.topic = details;
     });
   }
+
+  
 }
 
