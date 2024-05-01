@@ -1,7 +1,7 @@
 <p>single-topic works!</p>
 <p>single-topic works!</p>
 
-<div class="favourite-checkbox-div">
+<div class="favourite-div">
     <label for="fav-chechbox">Favourite</label>
     <input type="checkbox" id="fav-chechbox">
 </div>    
@@ -18,3 +18,25 @@
     <button class="comment-button">Comment</button>
   </div>
 -->
+
+<div class="comment-div">
+  <table class="table table-striped"> <!--más stílust adni neki!!!-->
+    <thead>
+      <tr>
+        <th>timestamp</th>
+        <th>username</th>
+        <th>comment</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let comment of commentList$ | async">
+        <td>{{comment.timestamp}}</td>
+        <td>{{comment.userId}}</td>
+        <td>{{comment.body}}</td>
+      </tr>      
+    </tbody>
+  </table>
+  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modalWrite()">Write a new comment</button>
+</div>
+
+

@@ -8,19 +8,25 @@
 }
 
 
-.favourite-checkbox-div input[type="checkbox"] {
+.favourite-div input[type="checkbox"] {
     width: 20px; 
     height: 20px;
     padding: 5px;
 }
 
-.favourite-checkbox-div label{
+.favourite-div label{
     padding: 5px;
 }
 
-.favourite-checkbox-div{    
+.favourite-div{    
     text-align: right;
     margin-right: 20px;
     font-weight: bold;
     font-size: large;
 }
+
+.comment-div {
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 40px;
+  }
