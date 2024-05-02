@@ -30,3 +30,8 @@
     margin-right: 100px;
     margin-top: 40px;
   }
+
+.text-input {
+    width: 300px;
+    margin: 5px;
+}
