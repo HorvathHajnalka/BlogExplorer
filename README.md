@@ -11,14 +11,12 @@ This prototype WebApplication is designed for managing blog posts, enabling user
 - **API Documentation:** Swagger
 - **Database:** MS SQL Sever
 - **Database Management:** Entity Framework for migrations
-- **Real-Time Communication:** Websocket
 
 ## Key Features
-- **Authentication:** Access to the system requires user authentication.
-- **Topic Interaction:** Users can view, filter, and select topics to see or add comments.
-- **Personalized Topic List:** Users can view a list of topics they have interacted with.
+- **Authentication & Authorization:** Access to the system requires user authentication, which is managed through the use of JSON Web Tokens (JWT). This ensures secure and scalable user sessions.
+- **Topic Interaction:** Users can view, filter, add to favorites and select topics to see or add comments.
 - **Notification System:** The system notifies users of new comments on topics they follow.
-- **Real-Time Updates:** Utilizes Websockets to deliver updates to users instantaneously.
+- **Real-Time Communication:** Utilizes Websockets to deliver updates to users instantaneously.
 
 ## Getting started
 
@@ -57,6 +55,7 @@ Within Visual Studio, you will need to install the following NuGet packages for 
 - `Microsoft.EntityFrameworkCore.Design`
 - `Microsoft.VisualStudio.Web.CodeGeneration.Design`
 - `Microsoft.AspNet.WebApi.Core`
+- `Microsoft.AspNetCore.Authentication.JwtBearer`
 
 ## Operation
 
@@ -85,7 +84,15 @@ To get your environment up and running, follow these steps:
    ```
    cd .\Client
    ```
-5. Start the Angular development server:
+5. Add Angular Material to your project:
+   ```
+   ng add @angular/material
+   ```
+6. Install Auth0 Angular JWT:
+   ```
+   npm install @auth0/angular-jwt
+   ```
+7. Start the Angular development server:
    ```
    ng serve --open
    ```
