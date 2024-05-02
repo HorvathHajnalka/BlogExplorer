@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import { BlogApiService } from '../../services/blog-api.service';
 import { UserStoreService } from '../../services/user-store.service';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 
@@ -55,9 +58,16 @@ export class SingleTopicComponent {
     });    
   }
 
-  getComments(): void {
+  /*getComments(): void {
     this.commentList$ = this.apiservice.getCommentList()
-  }
+  }*/
+
+  getComments(): void {
+    
+    this.commentList$ = this.apiservice.getCommentList().pipe(
+        map(comments => comments.filter(comment => comment.topicId == this.topicId))
+    );    
+}
 
   //getComments(): void {
   //  this.service.getCommentList().subscribe(
