@@ -195,9 +195,27 @@ namespace Server.Controllers
                 //// Adding the userId as a claim
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
                 
-            });
 
-            Console.WriteLine($"userId: {user.UserId}");
+            }); ;
+
+
+            /*
+             
+            // Debugging userId
+
+            var userIdClaim = identity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+
+            
+            if (userIdClaim != null)
+            {
+                
+                Console.WriteLine($"userId: {userIdClaim.Value.GetType()}");
+            }
+            else
+            {
+                Console.WriteLine("UserId claim not found.");
+            }*/
+            
 
             // Setup the signing credentials using the symmetric security key and specifying the algorithm
             var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);

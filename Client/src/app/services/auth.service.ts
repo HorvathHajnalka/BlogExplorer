@@ -104,9 +104,11 @@ export class AuthService {
   }
 
   getUserIdFromToken() {
+    //console.log(this.userPayload.userId)
     if (isPlatformBrowser(this.platformId) && this.userPayload) {
-      return this.userPayload.userId;
+      return this.userPayload.nameid;
     }
+    
     return null;    
   }
 
