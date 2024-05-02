@@ -42,3 +42,13 @@
 .table{
     margin-top: 20px;
 }
+.alert-success{
+    z-index: 10000;
+}
+.alert{
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    z-index: 100000000000;
+}
