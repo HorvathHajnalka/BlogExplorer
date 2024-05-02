@@ -85,10 +85,12 @@ export class SingleTopicComponent {
     // Ehhez használhatsz egy olyan függvényt, ami az API segítségével beállítja vagy törli a kedvenc témát
     // Példaként a checkFavorite() függvényt használjuk, hogy beállítsuk vagy töröljük a kedvenc témát
 
+    /*
+
     //ez így nem jó, de tudnom kell hozzá, hogy működik az API
     this.service.setFavoriteTopic(this.topicId, !this.isFavourite).subscribe(() => {
       this.isFavourite = !this.isFavourite;
-    });
+    });*/
   }
 }
 
