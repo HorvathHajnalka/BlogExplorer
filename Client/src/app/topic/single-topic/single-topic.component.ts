@@ -16,6 +16,7 @@ export class SingleTopicComponent {
   topicId!: number;
   topic: any = {};
   commentList$: Observable<any[]> | undefined 
+  isFavourite: boolean = false;
 
   constructor(private route: ActivatedRoute, private service: BlogApiService) {}
 
@@ -23,13 +24,17 @@ export class SingleTopicComponent {
     this.route.params.subscribe(params => {
       this.topicId = params['id'];
       this.loadTopic();  
-      this.getComments();    
+      this.getComments();
+      this.checkFavourite();    
     });        
   }
 
   modalTitle: string = ''; // Title for the modal dialog.
   writecommentComponent: boolean = false; // Controls visibility of the add/edit modal.
   newcomment: any; // The current topic to add/edit.
+
+  checkbox = document.getElementById('fav-checkbox') as HTMLInputElement;
+
 
   
   // Opens the modal to add a new topic.
@@ -68,5 +73,22 @@ export class SingleTopicComponent {
   //    }
   //  );
   //}
+
+  checkFavourite(): void {
+    // Implementálj egy hívást, hogy ellenőrizd, hogy a jelenlegi téma kedvenc-e
+    // Ehhez használhatsz egy olyan függvényt, ami az API segítségével lekéri a felhasználó kedvenc témáit
+    // A példakód ezt a függvényt toggleFavorite() néven implementálja
+  }
+
+  toggleFavourite(): void {
+    // Implementálj egy hívást, ami frissíti az adatbázist attól függően, hogy a téma kedvenc-e vagy sem
+    // Ehhez használhatsz egy olyan függvényt, ami az API segítségével beállítja vagy törli a kedvenc témát
+    // Példaként a checkFavorite() függvényt használjuk, hogy beállítsuk vagy töröljük a kedvenc témát
+
+    //ez így nem jó, de tudnom kell hozzá, hogy működik az API
+    this.service.setFavoriteTopic(this.topicId, !this.isFavourite).subscribe(() => {
+      this.isFavourite = !this.isFavourite;
+    });
+  }
 }
 
