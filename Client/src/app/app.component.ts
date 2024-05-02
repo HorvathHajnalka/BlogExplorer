@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
 
   public userName:any = [];
   public role:any = [];
+  public userId:any = [];
 
   constructor(private titleService: Title, private auth: AuthService, private userStore: UserStoreService, public router: Router, private http:HttpClient) { } // Inject the Title service
 
@@ -44,6 +45,12 @@ export class AppComponent implements OnInit {
       this.role = val || roleFromToken
     });
 
+    this.userStore.getUserIdFromStore()
+    .subscribe(val=>{
+      let userIdFromToken = this.auth.getUserIdFromToken();
+      this.userId = val || userIdFromToken
+    })
+
     // Subscribe to AuthService for event loginChanged 
     this.auth.loginChanged.subscribe((loggedIn: boolean) => {
       if (loggedIn) {
@@ -54,7 +61,11 @@ export class AppComponent implements OnInit {
         this.userStore.getRoleFromStore().subscribe(val=>{
             let roleFromToken = this.auth.getRoleFromToken();
             this.role = val || roleFromToken
-          });
+        });
+        this.userStore.getUserIdFromStore().subscribe(val => {
+            let userIdFromToken = this.auth.getUserNameFromToken();
+            this.userName = val || userIdFromToken;
+        }); 
       } else {
         this.userName = null;
         this.role = null;

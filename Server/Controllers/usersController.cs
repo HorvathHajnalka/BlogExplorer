@@ -194,7 +194,10 @@ namespace Server.Controllers
                 new Claim(ClaimTypes.Name, user.Username),
                 //// Adding the userId as a claim
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
+                
             });
+
+            Console.WriteLine($"userId: {user.UserId}");
 
             // Setup the signing credentials using the symmetric security key and specifying the algorithm
             var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
