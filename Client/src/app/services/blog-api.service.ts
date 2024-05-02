@@ -89,7 +89,7 @@ export class BlogApiService {
     return this.http.delete(this.blogAPIUrl + `/Users/${id}`);
   }
 
-  //----------------------------------API CALLS FOR COMMENTS----------------------------------
+  //----------------------------API CALLS FOR COMMENTS----------------------------------
   getCommentList(): Observable<any[]> {
     return this.http.get<any>(this.blogAPIUrl + '/Comments');
   }
@@ -108,5 +108,26 @@ export class BlogApiService {
 
   deleteComment(id:number|string){
     return this.http.delete(this.blogAPIUrl + `/Comments/${id}`);
+  }
+
+  //-----------------------API CALLS FOR FAVOURITE TOPiCS---------------------------------------
+  getFavTopicList(): Observable<any[]> {
+    return this.http.get<any>(this.blogAPIUrl + '/FavoriteTopics');
+  }
+
+  addFavTopic(data:any){
+    return this.http.post(this.blogAPIUrl + '/FavoriteTopics', data);
+  }
+
+  getFavTopic(id: number | string) {
+    return this.http.get(this.blogAPIUrl + `/FavoriteTopics/${id}`);
+  }
+
+  updateFavTopic(id:number|string, data:any){
+    return this.http.put(this.blogAPIUrl + `/FavoriteTopics/${id}`, data);
+  }
+
+  deleteFavTopic(id:number|string){
+    return this.http.delete(this.blogAPIUrl + `/FavoriteTopics/${id}`);
   }
 }
