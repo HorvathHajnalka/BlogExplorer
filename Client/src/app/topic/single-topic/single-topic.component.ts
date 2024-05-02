@@ -53,22 +53,20 @@ export class SingleTopicComponent {
     });
   }
 
+  getComments(): void {
+    this.commentList$ = this.service.getCommentList()
+  }
+
   //getComments(): void {
-  //  this.commentList$ = this.service.getCommentList().pipe(
-  //    map(comments => comments.filter(comment => comment.topicId === this.topicId))
+  //  this.service.getCommentList().subscribe(
+  //    (data: any[]) => {
+  //      console.log('Comments:', data);
+  //      this.commentList$ = of(data.filter(comment => comment.topicId === this.topicId));
+  //    },
+  //    error => {
+  //      console.error('Error fetching comments:', error);
+  //    }
   //  );
   //}
-
-  getComments(): void {
-    this.service.getCommentList().subscribe(
-      (data: any[]) => {
-        console.log('Comments:', data);
-        this.commentList$ = of(data.filter(comment => comment.topicId === this.topicId));
-      },
-      error => {
-        console.error('Error fetching comments:', error);
-      }
-    );
-  }
 }
 
