@@ -20,8 +20,8 @@ import { CommonModule } from '@angular/common';
 })
 export class SingleTopicComponent {
   topicId!: number;
-  userId!: number;
-  //userId! : Observable<string>
+  //userId!: number;
+  userId! : Observable<string>
   topic: any = {};
   commentList$: Observable<any[]> | undefined 
   isFavourite: boolean = false;
@@ -34,8 +34,8 @@ export class SingleTopicComponent {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.topicId = params['id'];
-      //this.userId = this.userstoreservice.getUserIdFromStore();
-      this.userstoreservice.getUserIdFromStore().pipe(
+      this.userId = this.userstoreservice.getUserIdFromStore();
+      /*this.userstoreservice.getUserIdFromStore().pipe(
         map(userId => parseInt(userId, 10))
       ).subscribe(
         userId => {
@@ -44,10 +44,11 @@ export class SingleTopicComponent {
         error => {
           console.error('Hiba történt:', error);
         }
-      );
+      );*/
       this.loadTopic();  
       this.getComments();  
     });   
+    
     this.checkFavourite();
     
   }
