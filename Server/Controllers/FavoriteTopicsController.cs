@@ -29,10 +29,10 @@ namespace Server.Controllers
         }
 
         // GET: api/FavoriteTopics/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<FavoriteTopic>> GetFavoriteTopic(int id)
+        [HttpGet("{userId}/{topicId}")]
+        public async Task<ActionResult<FavoriteTopic>> GetFavoriteTopic(int userId, int topicId)
         {
-            var favoriteTopic = await _context.FavoriteTopics.FindAsync(id);
+            var favoriteTopic = await _context.FavoriteTopics.FindAsync(userId, topicId);
 
             if (favoriteTopic == null)
             {
@@ -42,12 +42,11 @@ namespace Server.Controllers
             return favoriteTopic;
         }
 
-        // PUT: api/FavoriteTopics/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFavoriteTopic(int id, FavoriteTopic favoriteTopic)
+        // PUT: api/FavoriteTopics/5/3
+        [HttpPut("{userId}/{topicId}")]
+        public async Task<IActionResult> PutFavoriteTopic(int userId, int topicId, FavoriteTopic favoriteTopic)
         {
-            if (id != favoriteTopic.UserId)
+            if (userId != favoriteTopic.UserId || topicId != favoriteTopic.TopicId)
             {
                 return BadRequest();
             }
@@ -60,7 +59,7 @@ namespace Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!FavoriteTopicExists(id))
+                if (!FavoriteTopicExists(userId, topicId))
                 {
                     return NotFound();
                 }
@@ -72,6 +71,7 @@ namespace Server.Controllers
 
             return NoContent();
         }
+
 
         // POST: api/FavoriteTopics
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -85,7 +85,7 @@ namespace Server.Controllers
             }
             catch (DbUpdateException)
             {
-                if (FavoriteTopicExists(favoriteTopic.UserId))
+                if (FavoriteTopicExists(favoriteTopic.UserId, favoriteTopic.TopicId))
                 {
                     return Conflict();
                 }
@@ -95,14 +95,22 @@ namespace Server.Controllers
                 }
             }
 
-            return CreatedAtAction("GetFavoriteTopic", new { id = favoriteTopic.UserId }, favoriteTopic);
+            return CreatedAtAction("GetFavoriteTopic", new { userId = favoriteTopic.UserId, topicId = favoriteTopic.TopicId }, favoriteTopic);
         }
 
-        // DELETE: api/FavoriteTopics/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFavoriteTopic(int id)
+        private bool FavoriteTopicExists(int userId, int topicId)
         {
-            var favoriteTopic = await _context.FavoriteTopics.FindAsync(id);
+            return _context.FavoriteTopics.Any(e => e.UserId == userId && e.TopicId == topicId);
+        }
+
+
+
+        // DELETE: api/FavoriteTopics/5
+        [HttpDelete("{userId}/{topicId}")]
+        public async Task<IActionResult> DeleteFavoriteTopic(int userId, int topicId)
+        {
+            // Keresés összetett kulcs alapján
+            var favoriteTopic = await _context.FavoriteTopics.FindAsync(userId, topicId);
             if (favoriteTopic == null)
             {
                 return NotFound();
@@ -114,9 +122,5 @@ namespace Server.Controllers
             return NoContent();
         }
 
-        private bool FavoriteTopicExists(int id)
-        {
-            return _context.FavoriteTopics.Any(e => e.UserId == id);
-        }
     }
 }
