@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { BlogApiService } from '../../services/blog-api.service';
+import { UserStoreService } from '../../services/user-store.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-single-topic',
@@ -14,52 +16,47 @@ import { CommonModule } from '@angular/common';
 })
 export class SingleTopicComponent {
   topicId!: number;
+  //userId!: number;
+  userId! : Observable<string>
   topic: any = {};
   commentList$: Observable<any[]> | undefined 
   isFavourite: boolean = false;
+  newcomment: any;
+  checkbox = document.getElementById('fav-checkbox') as HTMLElement;
+  
 
-  constructor(private route: ActivatedRoute, private service: BlogApiService) {}
+  constructor(private route: ActivatedRoute, private apiservice: BlogApiService, private userstoreservice: UserStoreService) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.topicId = params['id'];
+      this.userId = this.userstoreservice.getUserIdFromStore();
+      /*this.userstoreservice.getUserIdFromStore().pipe(
+        map(userId => parseInt(userId, 10))
+      ).subscribe(
+        userId => {
+          this.userId = userId;
+        },
+        error => {
+          console.error('Hiba történt:', error);
+        }
+      );*/
       this.loadTopic();  
-      this.getComments();
-      this.checkFavourite();    
-    });        
+      this.getComments();  
+    });   
+    this.checkFavourite();
+    
   }
 
-  modalTitle: string = ''; // Title for the modal dialog.
-  writecommentComponent: boolean = false; // Controls visibility of the add/edit modal.
-  newcomment: any; // The current topic to add/edit.
-
-  checkbox = document.getElementById('fav-checkbox') as HTMLInputElement;
-
-
-  
-  // Opens the modal to add a new topic.
-  modalWrite() {
-    this.newcomment = {
-      commentId: 0,
-      userId: 0,
-      user: null,
-      topicId: 0,
-      topic: null,      
-      body: "",
-      timestamp: ""
-    };
-    this.modalTitle = "Write a new comment"; // Set modal title.
-    this.writecommentComponent = true; // Show the modal component.
-  }
 
   loadTopic() {
-    this.service.getTopic(this.topicId).subscribe(details => {
+    this.apiservice.getTopic(this.topicId).subscribe(details => {
       this.topic = details;
-    });
+    });    
   }
 
   getComments(): void {
-    this.commentList$ = this.service.getCommentList()
+    this.commentList$ = this.apiservice.getCommentList()
   }
 
   //getComments(): void {
@@ -75,12 +72,13 @@ export class SingleTopicComponent {
   //}
 
   checkFavourite(): void {
-    // Implementálj egy hívást, hogy ellenőrizd, hogy a jelenlegi téma kedvenc-e
-    // Ehhez használhatsz egy olyan függvényt, ami az API segítségével lekéri a felhasználó kedvenc témáit
-    // A példakód ezt a függvényt toggleFavorite() néven implementálja
+    console.log(`userId: ${this.userId}`);
   }
 
   toggleFavourite(): void {
+    if (this.checkbox){
+      
+    }
     // Implementálj egy hívást, ami frissíti az adatbázist attól függően, hogy a téma kedvenc-e vagy sem
     // Ehhez használhatsz egy olyan függvényt, ami az API segítségével beállítja vagy törli a kedvenc témát
     // Példaként a checkFavorite() függvényt használjuk, hogy beállítsuk vagy töröljük a kedvenc témát

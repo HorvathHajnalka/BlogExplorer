@@ -191,7 +191,9 @@ namespace Server.Controllers
                 // Adding the user's role as a claim
                 new Claim(ClaimTypes.Role, user.Role),
                 // Adding the username as a claim
-                new Claim(ClaimTypes.Name, user.Username)
+                new Claim(ClaimTypes.Name, user.Username),
+                //// Adding the userId as a claim
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
             });
 
             // Setup the signing credentials using the symmetric security key and specifying the algorithm

@@ -10,6 +10,7 @@ export class UserStoreService {
   public isOpen$: Observable<boolean> = this.isOpenSubject.asObservable();
 
   private userName$ = new BehaviorSubject<string>("");
+  private userId$ = new BehaviorSubject<string>("");
   private role$ = new BehaviorSubject<string>("");
 
   constructor() { }
@@ -40,6 +41,11 @@ export class UserStoreService {
   // setter for username
   public setUserNameForStore(userName:string){
     this.userName$.next(userName);
+  }
+
+  //getter for userId
+  public getUserIdFromStore(){
+    return this.userId$.asObservable();
   }
 
 }
