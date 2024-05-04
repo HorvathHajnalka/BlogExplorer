@@ -16,6 +16,7 @@
     <thead>
       <tr>
         <th>timestamp</th>
+        <th>name</th>
         <th>username</th>
         <th>comment</th>
       </tr>
@@ -23,7 +24,8 @@
     <tbody>
       <tr *ngFor="let comment of commentList$ | async">
         <td>{{comment.timestamp}}</td>
-        <td>{{comment.userId}}</td>
+        <td>{{namesMap.get(comment.userId)}}</td>
+        <td>{{userNamesMap.get(comment.userId)}}</td>
         <td>{{comment.body}}</td>
       </tr>      
     </tbody>

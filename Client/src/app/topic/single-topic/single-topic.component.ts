@@ -29,7 +29,8 @@ export class SingleTopicComponent implements OnInit{
   commentInputText: string = '';
   formattedDate!: string | null;
   isChecked: boolean | undefined;
-  
+  namesMap: Map<number, string> = new Map();
+  userNamesMap: Map<number, string> = new Map();
 
   constructor(private route: ActivatedRoute, private apiservice: BlogApiService, private userstoreservice: UserStoreService, private authservice: AuthService, private snackBar: MatSnackBar, private datePipe: DatePipe) {
     const currentDate = new Date();
@@ -50,22 +51,21 @@ export class SingleTopicComponent implements OnInit{
     })
 
     this.apiservice.getFavTopicList() // Feltehetően ez a függvény lekéri az összes kedvenc témát
-  .pipe(
-    catchError(error => {
-      console.error('Error retrieving favorite topics: ', error);
-      return EMPTY;
-    })
-  )
-  .subscribe(topics => {
-    
-    const foundTopic = topics.find(topic => topic.userId == this.userId && topic.topicId == this.topicId);
-    
-    this.isChecked = !!foundTopic;
-  });
+      .pipe(
+        catchError(error => {
+          console.error('Error retrieving favorite topics: ', error);
+          return EMPTY;
+        })
+      )
+      .subscribe(topics => {        
+        const foundTopic = topics.find(topic => topic.userId == this.userId && topic.topicId == this.topicId);        
+        this.isChecked = !!foundTopic;
+    });
 
     this.loadTopic();  
     this.getComments();  
-    
+    this.fillNamesMap();
+    this.fillUserNamesMap();    
   }
 
   onCheckboxChange(): void {
@@ -130,6 +130,22 @@ export class SingleTopicComponent implements OnInit{
         console.log('Something went wrong: ', error)
       });
     }
+  }
+
+  fillUserNamesMap() {
+    this.apiservice.getUserList().subscribe(data => {
+      data.forEach(user => {
+        this.userNamesMap.set(user.userId, user.username);        
+      });
+    });    
+  }
+
+  fillNamesMap() {
+    this.apiservice.getUserList().subscribe(data => {
+      data.forEach(user => {
+        this.namesMap.set(user.userId, user.name);      
+      });
+    });    
   }
 
   openSnackBar(message: string, action: string = '') {
