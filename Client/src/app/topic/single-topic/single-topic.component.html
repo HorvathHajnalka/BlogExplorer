@@ -3,21 +3,12 @@
 
 <div class="favourite-div">
     <label for="fav-chechbox">Favourite</label>
-    <input type="checkbox" id="fav-chechbox" >
+    <input type="checkbox" id="fav-chechbox" [(ngModel)]="isChecked" (change)="onCheckboxChange()" >
 </div>    
 
 <h2 class="text-center">{{ topic.name }}</h2>
 <p class="body">{{ topic.description }}</p>
 
-<!--<div class="comments-section">
-    
-    <ul class="comment-list">
-      <li *ngFor="let comment of comments">comment.text</li>
-    </ul>
-    
-    <button class="comment-button">Comment</button>
-  </div>
--->
 
 <div class="comment-div">
   <table class="table table-striped"> <!--más stílust adni neki!!!-->
