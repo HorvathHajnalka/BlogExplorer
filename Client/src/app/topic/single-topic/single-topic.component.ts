@@ -31,7 +31,7 @@ export class SingleTopicComponent implements OnInit{
 
   constructor(private route: ActivatedRoute, private apiservice: BlogApiService, private userstoreservice: UserStoreService, private authservice: AuthService, private snackBar: MatSnackBar, private datePipe: DatePipe) {
     const currentDate = new Date();
-    this.formattedDate = this.datePipe.transform(currentDate, 'yyyy-MM-dd HH:mm');
+    this.formattedDate = this.datePipe.transform(currentDate, 'yyyy-MM-ddTHH:mm:ss');
   }
 
   ngOnInit(): void {
@@ -111,11 +111,7 @@ export class SingleTopicComponent implements OnInit{
   }
 
   writeNewComment() {
-    if (this.commentInputText.trim() !== '') {
-
-      
-
-      console.log(this.formattedDate)
+    if (this.commentInputText.trim() !== '') {    
 
       const data = {
         "userId": this.userId,
@@ -123,6 +119,7 @@ export class SingleTopicComponent implements OnInit{
         "body": this.commentInputText,
         "timestamp": this.formattedDate
       }
+      console.log(data)
 
       this.apiservice.addComment(data).subscribe(response => {
         // successful API call deletes the input
