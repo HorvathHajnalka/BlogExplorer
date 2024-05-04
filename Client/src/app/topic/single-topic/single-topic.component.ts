@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // Az FormsModule importálása
+import { FormsModule } from '@angular/forms';
 import { BlogApiService } from '../../services/blog-api.service';
 import { UserStoreService } from '../../services/user-store.service';
 import { AuthService } from '../../services/auth.service';
@@ -8,11 +8,13 @@ import { Observable, of, EMPTY } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-single-topic',
   standalone: true,
   imports: [CommonModule, FormsModule],
+  providers: [DatePipe],
   templateUrl: './single-topic.component.html',
   styleUrl: './single-topic.component.css'
 })
@@ -24,9 +26,13 @@ export class SingleTopicComponent implements OnInit{
   commentList$: Observable<any[]> | undefined   
   newcomment: any;
   isChecked: boolean | undefined; 
-  
+  commentInputText: string = '';
+  formattedDate!: string | null;
 
-  constructor(private route: ActivatedRoute, private apiservice: BlogApiService, private userstoreservice: UserStoreService, private authservice: AuthService, private snackBar: MatSnackBar) {}
+  constructor(private route: ActivatedRoute, private apiservice: BlogApiService, private userstoreservice: UserStoreService, private authservice: AuthService, private snackBar: MatSnackBar, private datePipe: DatePipe) {
+    const currentDate = new Date();
+    this.formattedDate = this.datePipe.transform(currentDate, 'yyyy-MM-dd HH:mm');
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -102,6 +108,32 @@ export class SingleTopicComponent implements OnInit{
     this.commentList$ = this.apiservice.getCommentList().pipe(
         map(comments => comments.filter(comment => comment.topicId == this.topicId))
     );    
+  }
+
+  writeNewComment() {
+    if (this.commentInputText.trim() !== '') {
+
+      
+
+      console.log(this.formattedDate)
+
+      const data = {
+        "userId": this.userId,
+        "topicId": this.topicId,
+        "body": this.commentInputText,
+        "timestamp": this.formattedDate
+      }
+
+      this.apiservice.addComment(data).subscribe(response => {
+        // successful API call deletes the input
+        this.commentInputText = '';
+        this.openSnackBar("The new comment is successfully added");
+        this.getComments();
+      }, error => {
+        this.openSnackBar('Something went wrong: ', error);
+        console.log('Something went wrong: ', error)
+      });
+    }
   }
 
   openSnackBar(message: string, action: string = '') {

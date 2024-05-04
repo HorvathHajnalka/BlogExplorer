@@ -27,8 +27,8 @@
       </tr>      
     </tbody>
   </table>
-  <input class="text-input" type="text">
-  <button class="btn btn-primary">Write a new comment</button>
+  <input class="text-input" type="text" [(ngModel)]="commentInputText" placeholder="Write a new comment...">
+  <button class="btn btn-primary" (click)="writeNewComment()">Send</button>
 </div>
 
 
