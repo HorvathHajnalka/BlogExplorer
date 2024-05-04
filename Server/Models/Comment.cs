@@ -22,6 +22,7 @@ namespace Server.Models
         [MaxLength(255)]
         public string Body { get; set; } = string.Empty;
 
-        public DateTime Timestamp { get; set; }
+        [MaxLength(255)]
+        public String Timestamp { get; set; } = string.Empty;
     }
 }
