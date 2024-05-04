@@ -23,15 +23,17 @@ export class SingleTopicComponent implements OnInit{
   userId:any = [];
   topicId!: number;
   topic: any = {};
-  commentList$: Observable<any[]> | undefined   
-  newcomment: any;
-  isChecked: boolean | undefined; 
+  commentList$: Observable<any[]> | undefined  
+  commentListLength: number = 0; 
+  newcomment: any;   
   commentInputText: string = '';
   formattedDate!: string | null;
+  isChecked: boolean | undefined;
+  
 
   constructor(private route: ActivatedRoute, private apiservice: BlogApiService, private userstoreservice: UserStoreService, private authservice: AuthService, private snackBar: MatSnackBar, private datePipe: DatePipe) {
     const currentDate = new Date();
-    this.formattedDate = this.datePipe.transform(currentDate, 'yyyy-MM-ddTHH:mm:ss');
+    this.formattedDate = this.datePipe.transform(currentDate, 'yyyy-MM-dd HH:mm');
   }
 
   ngOnInit(): void {
@@ -47,20 +49,18 @@ export class SingleTopicComponent implements OnInit{
         this.userId = val || userIdFromToken
     })
 
-    this.apiservice.getFavTopic(this.userId, this.topicId)
+    this.apiservice.getFavTopicList() // Feltehetően ez a függvény lekéri az összes kedvenc témát
   .pipe(
     catchError(error => {
-      if (error.status === 404) {
-        this.isChecked = false;
-        return of(null);
-      } else {        
-        console.error('unknown error: ', error);
-        return EMPTY;
-      }
+      console.error('Error retrieving favorite topics: ', error);
+      return EMPTY;
     })
   )
-  .subscribe(response => {
-    this.isChecked = response !== null;
+  .subscribe(topics => {
+    
+    const foundTopic = topics.find(topic => topic.userId == this.userId && topic.topicId == this.topicId);
+    
+    this.isChecked = !!foundTopic;
   });
 
     this.loadTopic();  
@@ -71,8 +71,6 @@ export class SingleTopicComponent implements OnInit{
   onCheckboxChange(): void {
   
     if (this.isChecked) {
-
-      console.log("The chechbox is checked");
 
       var data = {
         "userId": this.userId,
@@ -85,8 +83,6 @@ export class SingleTopicComponent implements OnInit{
         this.openSnackBar('Something went wrong: '+ error);
       });
     } else {
-
-      console.log('The chechbox is unchecked');
 
       this.apiservice.deleteFavTopic(this.userId, this.topicId).subscribe(response => {
         this.openSnackBar(`${this.topic.name} successfully deleted from favourite topics`);
@@ -105,9 +101,12 @@ export class SingleTopicComponent implements OnInit{
 
   //this function gets the list of all comments, and filters it to the current topic
   getComments(): void {    
-    this.commentList$ = this.apiservice.getCommentList().pipe(
-        map(comments => comments.filter(comment => comment.topicId == this.topicId))
-    );    
+    this.apiservice.getCommentList().pipe(
+      map(comments => comments.filter(comment => comment.topicId == this.topicId))
+    ).subscribe(filteredComments => {
+      this.commentList$ = of(filteredComments);
+      this.commentListLength = filteredComments.length;
+    }); 
   }
 
   writeNewComment() {

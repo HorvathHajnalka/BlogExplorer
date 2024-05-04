@@ -11,7 +11,8 @@
 
 
 <div class="comment-div">
-  <table class="table table-striped"> <!--más stílust adni neki!!!-->
+  <p *ngIf="commentListLength === 0">There is no comment yet. Be the first!</p>
+  <table *ngIf="commentListLength > 0" class="table table-striped"> <!--más stílust adni neki!!!-->
     <thead>
       <tr>
         <th>timestamp</th>
