@@ -11,6 +11,10 @@ import { CommonModule } from '@angular/common';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { AuthService } from './services/auth.service';
 import { UserStoreService } from './services/user-store.service';
+import { WebSocketService } from './websocket.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 
 @Component({
@@ -27,7 +31,10 @@ export class AppComponent implements OnInit {
   public userName:any = [];
   public role:any = [];
 
-  constructor(private titleService: Title, private auth: AuthService, private userStore: UserStoreService, public router: Router, private http:HttpClient) { } // Inject the Title service
+  public userId:any = [];
+  receivedMessages: string[] = [];
+
+  constructor(private titleService: Title, private auth: AuthService, private userStore: UserStoreService, public router: Router, private http:HttpClient, private websocketService: WebSocketService, private snackBar: MatSnackBar, private apiservice: BlogApiService) { } // Inject the Title service
 
   ngOnInit() {
     this.titleService.setTitle('BlogExplorer'); // Set the browser tab title
@@ -37,6 +44,19 @@ export class AppComponent implements OnInit {
       let userNameFromToken = this.auth.getUserNameFromToken();
       this.userName = val || userNameFromToken
     });
+    this.websocketService.connect();
+    this.websocketService.messageReceived.subscribe((message: string) => {
+      const topicObj = JSON.parse(message);
+      if (this.userId) {
+      this.apiservice.getFavTopicList().subscribe(topics => {
+        // Check if topic is favourite
+        const isFavoriteTopic = topics.some(topic => topic.topicId.toString() == topicObj.topicId.toString() && topic.userId == this.userId);
+        if (isFavoriteTopic && topicObj.userId != this.userId) {
+          this.receivedMessages.push(message);
+          this.openSnackBar('New comment to: ' + topicObj.topicname);
+        }
+      });
+    }});
 
     this.userStore.getRoleFromStore()
     .subscribe(val=>{
@@ -54,10 +74,16 @@ export class AppComponent implements OnInit {
         this.userStore.getRoleFromStore().subscribe(val=>{
             let roleFromToken = this.auth.getRoleFromToken();
             this.role = val || roleFromToken
-          });
+
+        });
+        this.userStore.getUserIdFromStore().subscribe(val => {
+            let userIdFromToken = this.auth.getUserIdFromToken();
+            this.userId = val || userIdFromToken;
+        });
       } else {
         this.userName = null;
         this.role = null;
+        this.userId = null;
       }
     });
   }
@@ -65,5 +91,12 @@ export class AppComponent implements OnInit {
   logOut(){
     this.auth.signOut();
   }
+
+  openSnackBar(message: string, action: string = '') {
+    this.snackBar.open(message, action, {
+      duration: 2000, // A snackbar megjelenési ideje milliszekundumban
+    });
+  }
+
 }
 
