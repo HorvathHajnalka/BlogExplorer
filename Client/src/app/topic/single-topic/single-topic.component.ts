@@ -41,7 +41,6 @@ export class SingleTopicComponent implements OnInit{
   
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-<<<<<<< HEAD
       
 
       this.topicId = params['id'];           
