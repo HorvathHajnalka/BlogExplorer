@@ -1,96 +1,157 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BlogApiService } from '../../services/blog-api.service';
+import { UserStoreService } from '../../services/user-store.service';
+import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, EMPTY } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-single-topic',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
+  providers: [DatePipe],
   templateUrl: './single-topic.component.html',
   styleUrl: './single-topic.component.css'
 })
-export class SingleTopicComponent {
+export class SingleTopicComponent implements OnInit{
+  
+  userId:any = [];
   topicId!: number;
   topic: any = {};
-  commentList$: Observable<any[]> | undefined 
-  isFavourite: boolean = false;
+  commentList$: Observable<any[]> | undefined  
+  commentListLength: number = 0; 
+  newcomment: any;   
+  commentInputText: string = '';
+  formattedDate!: string | null;
+  isChecked: boolean | undefined;
+  namesMap: Map<number, string> = new Map();
+  userNamesMap: Map<number, string> = new Map();
 
-  constructor(private route: ActivatedRoute, private service: BlogApiService) {}
+  constructor(private route: ActivatedRoute, private apiservice: BlogApiService, private userstoreservice: UserStoreService, private authservice: AuthService, private snackBar: MatSnackBar, private datePipe: DatePipe) {
+    const currentDate = new Date();
+    this.formattedDate = this.datePipe.transform(currentDate, 'yyyy-MM-dd HH:mm');
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.topicId = params['id'];
-      this.loadTopic();  
-      this.getComments();
-      this.checkFavourite();    
-    });        
-  }
 
-  modalTitle: string = ''; // Title for the modal dialog.
-  writecommentComponent: boolean = false; // Controls visibility of the add/edit modal.
-  newcomment: any; // The current topic to add/edit.
+      this.topicId = params['id'];           
+      
+    });       
 
-  checkbox = document.getElementById('fav-checkbox') as HTMLInputElement;
+    this.userstoreservice.getUserIdFromStore()
+      .subscribe(val=>{
+        let userIdFromToken = this.authservice.getUserIdFromToken();
+        this.userId = val || userIdFromToken
+    })
 
-
-  
-  // Opens the modal to add a new topic.
-  modalWrite() {
-    this.newcomment = {
-      commentId: 0,
-      userId: 0,
-      user: null,
-      topicId: 0,
-      topic: null,      
-      body: "",
-      timestamp: ""
-    };
-    this.modalTitle = "Write a new comment"; // Set modal title.
-    this.writecommentComponent = true; // Show the modal component.
-  }
-
-  loadTopic() {
-    this.service.getTopic(this.topicId).subscribe(details => {
-      this.topic = details;
+    this.apiservice.getFavTopicList() // Feltehetően ez a függvény lekéri az összes kedvenc témát
+      .pipe(
+        catchError(error => {
+          console.error('Error retrieving favorite topics: ', error);
+          return EMPTY;
+        })
+      )
+      .subscribe(topics => {        
+        const foundTopic = topics.find(topic => topic.userId == this.userId && topic.topicId == this.topicId);        
+        this.isChecked = !!foundTopic;
     });
+
+    this.loadTopic();  
+    this.getComments();  
+    this.fillNamesMap();
+    this.fillUserNamesMap();    
   }
 
-  getComments(): void {
-    this.commentList$ = this.service.getCommentList()
+  onCheckboxChange(): void {
+  
+    if (this.isChecked) {
+
+      var data = {
+        "userId": this.userId,
+        "topicId": this.topicId
+      }
+
+      this.apiservice.addFavTopic(data).subscribe(response => {
+        this.openSnackBar(`${this.topic.name} successfully added to favourite topics`);
+      }, error => {
+        this.openSnackBar('Something went wrong: '+ error);
+      });
+    } else {
+
+      this.apiservice.deleteFavTopic(this.userId, this.topicId).subscribe(response => {
+        this.openSnackBar(`${this.topic.name} successfully deleted from favourite topics`);
+      }, error => {
+        this.openSnackBar('Something went wrong: '+ error);
+      });
+    }
   }
 
-  //getComments(): void {
-  //  this.service.getCommentList().subscribe(
-  //    (data: any[]) => {
-  //      console.log('Comments:', data);
-  //      this.commentList$ = of(data.filter(comment => comment.topicId === this.topicId));
-  //    },
-  //    error => {
-  //      console.error('Error fetching comments:', error);
-  //    }
-  //  );
-  //}
-
-  checkFavourite(): void {
-    // Implementálj egy hívást, hogy ellenőrizd, hogy a jelenlegi téma kedvenc-e
-    // Ehhez használhatsz egy olyan függvényt, ami az API segítségével lekéri a felhasználó kedvenc témáit
-    // A példakód ezt a függvényt toggleFavorite() néven implementálja
+  //this function loads the clicked topic
+  loadTopic() {
+    this.apiservice.getTopic(this.topicId).subscribe(details => {
+      this.topic = details;
+    });    
   }
 
-  toggleFavourite(): void {
-    // Implementálj egy hívást, ami frissíti az adatbázist attól függően, hogy a téma kedvenc-e vagy sem
-    // Ehhez használhatsz egy olyan függvényt, ami az API segítségével beállítja vagy törli a kedvenc témát
-    // Példaként a checkFavorite() függvényt használjuk, hogy beállítsuk vagy töröljük a kedvenc témát
+  //this function gets the list of all comments, and filters it to the current topic
+  getComments(): void {    
+    this.apiservice.getCommentList().pipe(
+      map(comments => comments.filter(comment => comment.topicId == this.topicId))
+    ).subscribe(filteredComments => {
+      this.commentList$ = of(filteredComments);
+      this.commentListLength = filteredComments.length;
+    }); 
+  }
 
-    /*
+  writeNewComment() {
+    if (this.commentInputText.trim() !== '') {    
 
-    //ez így nem jó, de tudnom kell hozzá, hogy működik az API
-    this.service.setFavoriteTopic(this.topicId, !this.isFavourite).subscribe(() => {
-      this.isFavourite = !this.isFavourite;
-    });*/
+      const data = {
+        "userId": this.userId,
+        "topicId": this.topicId,
+        "body": this.commentInputText,
+        "timestamp": this.formattedDate
+      }
+      console.log(data)
+
+      this.apiservice.addComment(data).subscribe(response => {
+        // successful API call deletes the input
+        this.commentInputText = '';
+        this.openSnackBar("The new comment is successfully added");
+        this.getComments();
+      }, error => {
+        this.openSnackBar('Something went wrong: ', error);
+        console.log('Something went wrong: ', error)
+      });
+    }
+  }
+
+  fillUserNamesMap() {
+    this.apiservice.getUserList().subscribe(data => {
+      data.forEach(user => {
+        this.userNamesMap.set(user.userId, user.username);        
+      });
+    });    
+  }
+
+  fillNamesMap() {
+    this.apiservice.getUserList().subscribe(data => {
+      data.forEach(user => {
+        this.namesMap.set(user.userId, user.name);      
+      });
+    });    
+  }
+
+  openSnackBar(message: string, action: string = '') {
+    this.snackBar.open(message, action, {
+      duration: 2000, // A snackbar megjelenési ideje milliszekundumban
+    });
   }
 }
 
