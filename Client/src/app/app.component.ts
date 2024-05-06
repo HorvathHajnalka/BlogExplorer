@@ -35,7 +35,6 @@ export class AppComponent implements OnInit {
   receivedMessages: string[] = [];
 
   constructor(private titleService: Title, private auth: AuthService, private userStore: UserStoreService, public router: Router, private http:HttpClient, private websocketService: WebSocketService, private snackBar: MatSnackBar, private apiservice: BlogApiService) { } // Inject the Title service
-
   ngOnInit() {
     this.titleService.setTitle('BlogExplorer'); // Set the browser tab title
 
@@ -63,6 +62,12 @@ export class AppComponent implements OnInit {
       let roleFromToken = this.auth.getRoleFromToken();
       this.role = val || roleFromToken
     });
+
+    this.userStore.getUserIdFromStore()
+    .subscribe(val=>{
+      let userIdFromToken = this.auth.getUserIdFromToken();
+      this.userId = val || userIdFromToken
+    })
 
     // Subscribe to AuthService for event loginChanged 
     this.auth.loginChanged.subscribe((loggedIn: boolean) => {

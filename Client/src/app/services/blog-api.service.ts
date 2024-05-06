@@ -119,15 +119,15 @@ export class BlogApiService {
     return this.http.post(this.blogAPIUrl + '/FavoriteTopics', data);
   }
 
-  getFavTopic(id: number | string) {
-    return this.http.get(this.blogAPIUrl + `/FavoriteTopics/${id}`);
+  getFavTopic(userId: number | string, topicId: number | string) {
+    return this.http.get(this.blogAPIUrl + `/FavoriteTopics/${userId}/${topicId}`);
   }
 
-  updateFavTopic(id:number|string, data:any){
-    return this.http.put(this.blogAPIUrl + `/FavoriteTopics/${id}`, data);
+  updateFavTopic(userId: number | string, topicId: number | string, data:any){
+    return this.http.put(this.blogAPIUrl + `/FavoriteTopics/${userId}/${topicId}`, data);
   }
 
-  deleteFavTopic(id:number|string){
-    return this.http.delete(this.blogAPIUrl + `/FavoriteTopics/${id}`);
+  deleteFavTopic(userId: number | string, topicId: number | string){
+    return this.http.delete(this.blogAPIUrl + `/FavoriteTopics/${userId}/${topicId}`);
   }
 }

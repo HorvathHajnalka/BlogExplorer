@@ -41,6 +41,7 @@ export class SingleTopicComponent implements OnInit{
   
   ngOnInit(): void {
     this.route.params.subscribe(params => {
+<<<<<<< HEAD
       
 
       this.topicId = params['id'];           
@@ -169,6 +170,7 @@ export class SingleTopicComponent implements OnInit{
   openSnackBar(message: string, action: string = '') {
     this.snackBar.open(message, action, {
       duration: 2000, // A snackbar megjelenési ideje milliszekundumban
+
     });
   }
 }

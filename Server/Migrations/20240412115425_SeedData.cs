@@ -31,9 +31,9 @@ namespace Server.Migrations
             migrationBuilder.Sql("INSERT INTO Topics (Name, TopicTypeId, Description) VALUES ('Nutrition Facts', (SELECT TopicTypeId FROM TopicTypes WHERE Name = 'Health'), 'Diet and nutritional information')");
 
             // Insert Comments
-            migrationBuilder.Sql("INSERT INTO Comments (UserId, TopicId, Body, Timestamp) VALUES ((SELECT UserId FROM Users WHERE Username = 'johndoe'), (SELECT TopicId FROM Topics WHERE Name = 'Artificial Intelligence'), 'Very informative, thanks!', GETDATE())");
-            migrationBuilder.Sql("INSERT INTO Comments (UserId, TopicId, Body, Timestamp) VALUES ((SELECT UserId FROM Users WHERE Username = 'janedoe'), (SELECT TopicId FROM Topics WHERE Name = 'Artificial Intelligence'), 'This is amazing!', GETDATE())");
-            migrationBuilder.Sql("INSERT INTO Comments (UserId, TopicId, Body, Timestamp) VALUES ((SELECT UserId FROM Users WHERE Username = 'janedoe'), (SELECT TopicId FROM Topics WHERE Name = 'Quantum Physics'), 'Absolutely fascinating!', GETDATE())");
+            migrationBuilder.Sql("INSERT INTO Comments (UserId, TopicId, Body, Timestamp) VALUES ((SELECT UserId FROM Users WHERE Username = 'johndoe'), (SELECT TopicId FROM Topics WHERE Name = 'Artificial Intelligence'), 'Very informative, thanks!', '2024-05-03 19:33')");
+            migrationBuilder.Sql("INSERT INTO Comments (UserId, TopicId, Body, Timestamp) VALUES ((SELECT UserId FROM Users WHERE Username = 'janedoe'), (SELECT TopicId FROM Topics WHERE Name = 'Artificial Intelligence'), 'This is amazing!', '2024-05-02 11:24')");
+            migrationBuilder.Sql("INSERT INTO Comments (UserId, TopicId, Body, Timestamp) VALUES ((SELECT UserId FROM Users WHERE Username = 'janedoe'), (SELECT TopicId FROM Topics WHERE Name = 'Quantum Physics'), 'Absolutely fascinating!', '2024-03-02 00:37')");
 
             // Insert FavoriteTopics
             migrationBuilder.Sql("INSERT INTO FavoriteTopics (UserId, TopicId) VALUES ((SELECT UserId FROM Users WHERE Username = 'johndoe'), (SELECT TopicId FROM Topics WHERE Name = 'Nutrition Facts'))");
