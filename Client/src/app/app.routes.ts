@@ -18,6 +18,6 @@ export const routes: Routes = [
     {path:'users', component:UserComponent, canActivate: [AdminGuard]},
     {path:'login', component:LoginComponent},
     {path:'registration', component:RegistrationComponent},
-    {path: 'topic/:id', component:SingleTopicComponent}
+    {path: 'topic/:id', component:SingleTopicComponent, canActivate:[AuthGuard]}
 ]
 

@@ -31,7 +31,7 @@ namespace Server.Controllers
 
 
         // GET: api/Users
-        // [Authorize]
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {

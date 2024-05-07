@@ -44,14 +44,9 @@ export class LoginComponent {
         password: ['',Validators.required]
       })
 
-      // Subscribe to routing events to listen for changes in navigation
-      this.router.events.subscribe((event: Event) => {
-        // Check if the navigation has ended
-        if (event instanceof NavigationEnd) {
-          // Set visibility based on whether the current route is the root URL
-          this.isVisible = this.router.url === '/';
-        }
-      });
+      this.service.signOut();
+
+     
     }
 
     hideShowPass(){
