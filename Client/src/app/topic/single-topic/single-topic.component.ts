@@ -9,6 +9,7 @@ import { map, catchError } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
+import { WebSocketService } from '../../websocket.service';
 
 @Component({
   selector: 'app-single-topic',
@@ -31,19 +32,34 @@ export class SingleTopicComponent implements OnInit{
   isChecked: boolean | undefined;
   namesMap: Map<number, string> = new Map();
   userNamesMap: Map<number, string> = new Map();
+  receivedMessages: string[] = [];
 
-  constructor(private route: ActivatedRoute, private apiservice: BlogApiService, private userstoreservice: UserStoreService, private authservice: AuthService, private snackBar: MatSnackBar, private datePipe: DatePipe) {
+  constructor(private route: ActivatedRoute, private apiservice: BlogApiService, private userstoreservice: UserStoreService, private authservice: AuthService, private snackBar: MatSnackBar, private datePipe: DatePipe, private websocketService: WebSocketService) {
     const currentDate = new Date();
     this.formattedDate = this.datePipe.transform(currentDate, 'yyyy-MM-dd HH:mm');
   }
-
+  
   ngOnInit(): void {
     this.route.params.subscribe(params => {
+      
 
       this.topicId = params['id'];           
       
     });       
-
+    /*
+    this.websocketService.connect();
+    this.websocketService.messageReceived.subscribe((message: string) => {
+      this.apiservice.getFavTopicList().subscribe(topics => {
+        // Check if topic is favourite
+        const isFavoriteTopic = topics.some(topic => topic.topicId.toString() == message.toString() && topic.userId == this.userId);
+        console.log(topics);
+        if (isFavoriteTopic) {
+          this.receivedMessages.push(message);
+          this.openSnackBar(message);
+        }
+      });
+    });
+    */
     this.userstoreservice.getUserIdFromStore()
       .subscribe(val=>{
         let userIdFromToken = this.authservice.getUserIdFromToken();
@@ -116,7 +132,8 @@ export class SingleTopicComponent implements OnInit{
         "userId": this.userId,
         "topicId": this.topicId,
         "body": this.commentInputText,
-        "timestamp": this.formattedDate
+        "timestamp": this.formattedDate,
+        "topicname":this.topic.name
       }
       console.log(data)
 
@@ -125,6 +142,7 @@ export class SingleTopicComponent implements OnInit{
         this.commentInputText = '';
         this.openSnackBar("The new comment is successfully added");
         this.getComments();
+        this.websocketService.sendMessage(JSON.stringify(data));
       }, error => {
         this.openSnackBar('Something went wrong: ', error);
         console.log('Something went wrong: ', error)
@@ -151,7 +169,7 @@ export class SingleTopicComponent implements OnInit{
   openSnackBar(message: string, action: string = '') {
     this.snackBar.open(message, action, {
       duration: 2000, // A snackbar megjelenési ideje milliszekundumban
+
     });
   }
 }
-

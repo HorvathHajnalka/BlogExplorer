@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using BlogExp.WebSocket;
+using BlogExp.WebSocket.Handlers;
+using Microsoft.OpenApi.Models;
 
 // Define a policy name for CORS settings
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -16,7 +19,35 @@ var builder = WebApplication.CreateBuilder(args);
 // Add Swagger/OpenAPI support for documenting your API and testing it via a UI
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme."
+
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+});
+
+builder.Services.AddWebSocketManager();
 
 // Configure the DbContext with SQL Server using the connection string from app settings
 builder.Services.AddDbContext<DataContext>(options =>
@@ -74,7 +105,8 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = false,
 
         // Disable issuer validation. This means the token can be considered valid regardless of the 'iss' claim.
-        ValidateIssuer = false
+        ValidateIssuer = false,
+        ValidateLifetime = true
     };
 });
 
@@ -101,6 +133,12 @@ app.UseAuthentication();
 
 // Use Authorization middleware
 app.UseAuthorization();
+
+var serviceScopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+var serviceProvider = serviceScopeFactory.CreateScope().ServiceProvider;
+app.UseWebSockets();
+app.MapWebSocketManager("/ws", serviceProvider.GetService<CommentHandler>());
+
 
 // Map controller actions to their routes
 app.MapControllers();
