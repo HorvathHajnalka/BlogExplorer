@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BlogExplorer.Data;
 using Server.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers
 {
@@ -23,6 +24,7 @@ namespace Server.Controllers
 
         // GET: api/FavoriteTopics
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<FavoriteTopic>>> GetFavoriteTopics()
         {
             return await _context.FavoriteTopics.ToListAsync();
@@ -30,6 +32,7 @@ namespace Server.Controllers
 
         // GET: api/FavoriteTopics/5
         [HttpGet("{userId}/{topicId}")]
+        [Authorize]
         public async Task<ActionResult<FavoriteTopic>> GetFavoriteTopic(int userId, int topicId)
         {
             var favoriteTopic = await _context.FavoriteTopics.FindAsync(userId, topicId);
@@ -44,6 +47,7 @@ namespace Server.Controllers
 
         // PUT: api/FavoriteTopics/5/3
         [HttpPut("{userId}/{topicId}")]
+        [Authorize]
         public async Task<IActionResult> PutFavoriteTopic(int userId, int topicId, FavoriteTopic favoriteTopic)
         {
             if (userId != favoriteTopic.UserId || topicId != favoriteTopic.TopicId)
@@ -76,6 +80,7 @@ namespace Server.Controllers
         // POST: api/FavoriteTopics
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<FavoriteTopic>> PostFavoriteTopic(FavoriteTopic favoriteTopic)
         {
             _context.FavoriteTopics.Add(favoriteTopic);
@@ -107,6 +112,7 @@ namespace Server.Controllers
 
         // DELETE: api/FavoriteTopics/5
         [HttpDelete("{userId}/{topicId}")]
+        [Authorize]
         public async Task<IActionResult> DeleteFavoriteTopic(int userId, int topicId)
         {
             // Keresés összetett kulcs alapján

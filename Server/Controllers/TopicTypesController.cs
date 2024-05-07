@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BlogExplorer.Data;
 using Server.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers
 {
@@ -23,6 +24,7 @@ namespace Server.Controllers
 
         // GET: api/TopicTypes
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<TopicType>>> GetTopicTypes()
         {
             return await _context.TopicTypes.ToListAsync();
@@ -30,6 +32,7 @@ namespace Server.Controllers
 
         // GET: api/TopicTypes/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<TopicType>> GetTopicType(int id)
         {
             var topicType = await _context.TopicTypes.FindAsync(id);
@@ -45,6 +48,7 @@ namespace Server.Controllers
         // PUT: api/TopicTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PutTopicType(int id, TopicType topicType)
         {
             if (id != topicType.TopicTypeId)
@@ -76,6 +80,7 @@ namespace Server.Controllers
         // POST: api/TopicTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<TopicType>> PostTopicType(TopicType topicType)
         {
             _context.TopicTypes.Add(topicType);
@@ -86,6 +91,7 @@ namespace Server.Controllers
 
         // DELETE: api/TopicTypes/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteTopicType(int id)
         {
             var topicType = await _context.TopicTypes.FindAsync(id);
