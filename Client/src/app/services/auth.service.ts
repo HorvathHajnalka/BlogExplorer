@@ -61,6 +61,7 @@ export class AuthService {
   storeToken(tokenValue: string) {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('token', tokenValue);
+      console.log('token stored');
       this.tokenSubject.next(tokenValue);
     }
   }

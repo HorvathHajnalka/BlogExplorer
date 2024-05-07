@@ -21,7 +21,7 @@ import { Observable, of } from 'rxjs';
   selector: 'app-root', // The component's CSS selector
   standalone: true, // Marks the component as standalone
   imports: [RouterOutlet, ShowTopicComponent, TopicComponent, HttpClientModule, RouterLink, RouterLinkActive, CommonModule], // Imports necessary modules and components
-  providers:[{provide:HTTP_INTERCEPTORS, useClass:TokenInterceptor, multi: true}],
+  //providers:[{provide:HTTP_INTERCEPTORS, useClass:TokenInterceptor, multi: true}],
   templateUrl: './app.component.html', // The location of the component's template file
   styleUrls: ['./app.component.css'] // The location of the component's private CSS styles
 })

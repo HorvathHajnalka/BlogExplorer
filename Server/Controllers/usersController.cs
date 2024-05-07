@@ -15,6 +15,7 @@ using System.Text;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Server.Controllers
 {
@@ -31,7 +32,7 @@ namespace Server.Controllers
 
 
         // GET: api/Users
-        [Authorize]
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {

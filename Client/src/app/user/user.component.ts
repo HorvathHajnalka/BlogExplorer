@@ -8,6 +8,9 @@ import { AppComponent } from '../app.component';
   selector: 'app-user',
   standalone: true,
   imports: [HttpClientModule, ShowUserComponent],
+  //providers: [
+   // { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+  //],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
