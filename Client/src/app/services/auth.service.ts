@@ -103,6 +103,15 @@ export class AuthService {
     return null;
   }
 
+  getUserIdFromToken() {
+    //console.log(this.userPayload.userId)
+    if (isPlatformBrowser(this.platformId) && this.userPayload) {
+      return this.userPayload.nameid;
+    }
+    
+    return null;    
+  }
+
   getTokenObservable(): Observable<string|null> {
     return this.tokenSubject.asObservable();
   }

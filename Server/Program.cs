@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using BlogExp.WebSocket;
+using BlogExp.WebSocket.Handlers;
 
 // Define a policy name for CORS settings
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -17,6 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddWebSocketManager();
 
 // Configure the DbContext with SQL Server using the connection string from app settings
 builder.Services.AddDbContext<DataContext>(options =>
@@ -101,6 +104,12 @@ app.UseAuthentication();
 
 // Use Authorization middleware
 app.UseAuthorization();
+
+var serviceScopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+var serviceProvider = serviceScopeFactory.CreateScope().ServiceProvider;
+app.UseWebSockets();
+app.MapWebSocketManager("/ws", serviceProvider.GetService<CommentHandler>());
+
 
 // Map controller actions to their routes
 app.MapControllers();

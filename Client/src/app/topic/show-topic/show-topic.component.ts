@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppComponent } from '../../app.component';
 
+
 // Decorator that marks a class as an Angular component, providing template and style information.
 @Component({
   selector: 'app-show-topic', // The CSS selector that identifies this component in a template
