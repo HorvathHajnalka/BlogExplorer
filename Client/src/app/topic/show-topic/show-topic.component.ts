@@ -1,12 +1,16 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, map } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { BlogApiService } from '../../services/blog-api.service';
+import { UserStoreService } from '../../services/user-store.service';
+import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common'; 
 import { AddEditTopicComponent } from '../add-edit-topic/add-edit-topic.component';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppComponent } from '../../app.component';
+import { catchError } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
 
 
 // Decorator that marks a class as an Angular component, providing template and style information.
@@ -19,6 +23,7 @@ import { AppComponent } from '../../app.component';
 })
 export class ShowTopicComponent implements OnInit{ // The component class that implements the OnInit lifecycle hook.
 
+  userId:any = [];
   // Properties to hold observables for topic list and topic types list
   topicList$!:Observable<any[]>; // Observable to hold the list of topics, fetched from the BlogApiService
   topicTypesList$!:Observable<any[]>; // Observable to hold the list of topic types, if needed in future expansion.
@@ -26,16 +31,54 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
   searchTerm: string = '';
   selectedTopicType: string = 'all';
   filteredTopicList$: Observable<any[]> | undefined;
+  favtopics$!:Observable<any[]>;
+  comtopics$!:Observable<any[]>;
   // Map to display data associated with foreign keys. Maps topic type IDs to their string representations.
   topicTypesMap:Map<number, string> = new Map()
 
+  favtopicIds!: any[];
+  comtopicIds!: any[];
+  isFavChecked: boolean = false;
+  isComChecked: boolean = false;
+
   // Constructor that injects the BlogApiService for fetching data
-  constructor(private service:BlogApiService, private router: Router , @Inject(AppComponent) public appComponent: AppComponent) {}
+  constructor(private apiservice:BlogApiService, private userstoreservice: UserStoreService, private authservice: AuthService, private router: Router , @Inject(AppComponent) public appComponent: AppComponent) {}
 
   ngOnInit(): void {
+    //initialize userId
+    this.userstoreservice.getUserIdFromStore()
+      .subscribe(val=>{
+        let userIdFromToken = this.authservice.getUserIdFromToken();
+        this.userId = val || userIdFromToken
+    })
+
+    //initialize favourite topic's Id array
+    this.apiservice.getFavTopicList().pipe(
+      switchMap(topics => {
+        
+        const userFavoriteTopics = topics.filter(topic => topic.userId == this.userId);
+        const userFavoriteTopicIds = userFavoriteTopics.map(topic => topic.topicId);
+        return of(userFavoriteTopicIds);
+      })
+    ).subscribe(favtopicIds => {
+      this.favtopicIds = favtopicIds;
+    });
+
+    //initialize commented topic's Id array
+    this.apiservice.getCommentList().pipe(
+      switchMap(topics => {
+        
+        const userCommentedTopics = topics.filter(topic => topic.userId == this.userId);
+        const userCommentedTopicIds = userCommentedTopics.map(topic => topic.topicId);
+        return of(userCommentedTopicIds);
+      })
+    ).subscribe(comtopicIds => {
+      this.comtopicIds = comtopicIds;
+    });
+
     // On component initialization, fetch the topic list from the BlogApiService and assign it to the topicList$ observable.
-    this.topicList$ = this.service.getTopicList();
-    this.topicTypesList$ = this.service.getTopicTypeList();
+    this.topicList$ = this.apiservice.getTopicList();
+    this.topicTypesList$ = this.apiservice.getTopicTypeList();
     this.refreshTopicTypesMap();
     this.searchByTopic();
   }
@@ -69,7 +112,7 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
    // Deletes a topic after confirmation.
    delete(item: any) {
      if (confirm(`Are you sure you want to delete topic: "${item.name}" ?`)) {
-       this.service.deleteTopic(item.topicId).subscribe(res => {
+       this.apiservice.deleteTopic(item.topicId).subscribe(res => {
          var closeModalBtn = document.getElementById('add-edit-modal-close');
          if (closeModalBtn) {
            closeModalBtn.click(); // Programmatically close the modal.
@@ -92,14 +135,14 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
    // Closes the modal and refreshes the topic list.
    modalClose() {
      this.activateAddEditTopicComponent = false; // Hide the modal.
-     this.topicList$ = this.service.getTopicList(); // Refresh the topic list.
+     this.topicList$ = this.apiservice.getTopicList(); // Refresh the topic list.
      this.searchByTopic();
    }
  
 
    // Populates the map of topic types for display.
    refreshTopicTypesMap() {
-     this.service.getTopicTypeList().subscribe(data => {
+     this.apiservice.getTopicTypeList().subscribe(data => {
        this.topicTypesList = data; // Store the list of topic types.
        for (let i = 0; i < data.length; i++) {
          this.topicTypesMap.set(this.topicTypesList[i].topicTypeId, this.topicTypesList[i].name); // Map topic type IDs to names.
@@ -110,7 +153,7 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
 
    searchByTopic() {
     if (this.searchTerm.trim() !== '') {
-      this.filteredTopicList$ = this.service.getTopicList().pipe(
+      this.filteredTopicList$ = this.apiservice.getTopicList().pipe(
         switchMap(topics => {
           return of(topics.filter(item => {
             return item.name.toLowerCase().includes(this.searchTerm.toLowerCase());
@@ -120,7 +163,7 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
       return;
     }
     if (this.selectedTopicType !== 'all') {
-      this.filteredTopicList$ = this.service.getTopicList().pipe(
+      this.filteredTopicList$ = this.apiservice.getTopicList().pipe(
         switchMap(topics => {
           return of(topics.filter(item => {
             const topicType = this.topicTypesMap.get(item.topicTypeId);
@@ -133,7 +176,7 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
       );
       return;
     }
-    this.filteredTopicList$ = this.service.getTopicList();
+    this.filteredTopicList$ = this.apiservice.getTopicList();
   }
    
 
@@ -142,6 +185,40 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
 	  this.selectedTopicType = 'all';
 	  this.searchByTopic();
 	}
+
+  onFavCheckboxChange(): void {
+    this.clearSearchTerm();
+    if (this.isFavChecked) {     
+
+      this.isComChecked = false;
+
+      this.apiservice.getTopicList().pipe(
+        map(topics => topics.filter(topic => this.favtopicIds.includes(topic.topicId)))
+      ).subscribe(filteredTopics => {
+        this.filteredTopicList$ = of(filteredTopics);
+      });
+      
+    } else {
+      this.filteredTopicList$ = this.apiservice.getTopicList();
+    }
+  }
+
+  onComCheckboxChange(): void {
+    this.clearSearchTerm();
+    if (this.isComChecked) {
+      
+      this.isFavChecked = false;
+
+      this.apiservice.getTopicList().pipe(
+        map(topics => topics.filter(topic => this.comtopicIds.includes(topic.topicId)))
+      ).subscribe(filteredTopics => {
+        this.filteredTopicList$ = of(filteredTopics);
+      });
+      
+    } else {      
+      this.filteredTopicList$ = this.apiservice.getTopicList();
+    }
+  }
 
    // Method for open the topic in a new page
   viewTopic(topic: any) {

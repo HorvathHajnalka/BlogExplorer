@@ -66,7 +66,9 @@ export class SingleTopicComponent implements OnInit{
         this.userId = val || userIdFromToken
     })
 
-    this.apiservice.getFavTopicList() // Feltehetően ez a függvény lekéri az összes kedvenc témát
+    // it gets the full list of favourite topic, and filter it by topicId and userId
+    // and set the checkbox
+    this.apiservice.getFavTopicList()
       .pipe(
         catchError(error => {
           console.error('Error retrieving favorite topics: ', error);
@@ -168,8 +170,7 @@ export class SingleTopicComponent implements OnInit{
 
   openSnackBar(message: string, action: string = '') {
     this.snackBar.open(message, action, {
-      duration: 2000, // A snackbar megjelenési ideje milliszekundumban
-
+      duration: 2000,
     });
   }
 }
