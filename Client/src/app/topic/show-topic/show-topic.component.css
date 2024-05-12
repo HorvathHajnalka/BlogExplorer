@@ -59,3 +59,20 @@ tr:hover {
 .alert-success{
     z-index: 10000;
 }
+
+.checkbox-div input[type="checkbox"] {
+    width: 15px; 
+    height: 15px;
+    padding: 5px;
+}
+
+.checkbox-div label{
+    padding: 5px;
+    margin-left: 20px;
+}
+
+.checkbox-div{    
+    text-align: right;
+    margin-right: 20px;
+    font-size: medium;
+}
