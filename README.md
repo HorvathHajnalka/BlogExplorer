@@ -98,6 +98,14 @@ To get your environment up and running, follow these steps:
    ```
   This command compiles the client on port 4200, launches the development server on port 7111, and opens the application in your default web browser. Please note that the application is configured to only work on port 4200 and 7111.
 
+## Login - Examples (based on two different roles)
+
+To test role-based functions, usage of the following login data is possible initially:
+```
+(ADMIN) username: admin, password: admin
+(USER) username: johndoe, password: pwd
+```
+
 ## Conclusion
 
 You should now have the Blog Explorer Platform running locally on your machine.
