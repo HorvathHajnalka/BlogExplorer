@@ -1,12 +1,11 @@
 // Import services
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Router, RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { ShowTopicComponent } from './topic/show-topic/show-topic.component';
 import { TopicComponent } from './topic/topic.component';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { Title } from '@angular/platform-browser'; 
 import { BlogApiService } from './services/blog-api.service';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { AuthService } from './services/auth.service';
@@ -26,6 +25,7 @@ import { Observable, of } from 'rxjs';
   styleUrls: ['./app.component.css'] // The location of the component's private CSS styles
 })
 export class AppComponent implements OnInit {
+  //@ViewChild(ShowTopicComponent) showTopicComponent!: ShowTopicComponent;
   title = 'angular17-blogexplorer-api'; // Property for the application's title
 
   public userName:any = [];
@@ -96,6 +96,7 @@ export class AppComponent implements OnInit {
   logOut(){
     this.auth.signOut();
   }
+
 
   openSnackBar(message: string, action: string = '') {
     this.snackBar.open(message, action, {

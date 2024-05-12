@@ -26,6 +26,12 @@
         <option *ngFor="let type of topicTypesList" [value]="type.name">{{ type.name }}</option>
       </select>
     </div>
+    <div class="checkbox-div">
+      <label for="fav-chechbox">My favourites</label>
+      <input type="checkbox" id="fav-checkbox" [(ngModel)]="isFavChecked" (change)="onFavCheckboxChange()">
+      <label for="comment-chechbox">My comments</label>
+      <input type="checkbox" id="comment-checkbox" [(ngModel)]="isComChecked" (change)="onComCheckboxChange()">
+    </div>
   </div>
   
 
