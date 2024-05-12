@@ -65,15 +65,15 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
     });
 
     //initialize commented topic's Id array
-    this.apiservice.getFavTopicList().pipe(
+    this.apiservice.getCommentList().pipe(
       switchMap(topics => {
         
-        const userFavoriteTopics = topics.filter(topic => topic.userId == this.userId);
-        const userFavoriteTopicIds = userFavoriteTopics.map(topic => topic.topicId);
-        return of(userFavoriteTopicIds);
+        const userCommentedTopics = topics.filter(topic => topic.userId == this.userId);
+        const userCommentedTopicIds = userCommentedTopics.map(topic => topic.topicId);
+        return of(userCommentedTopicIds);
       })
-    ).subscribe(favtopicIds => {
-      this.favtopicIds = favtopicIds;
+    ).subscribe(comtopicIds => {
+      this.comtopicIds = comtopicIds;
     });
 
     // On component initialization, fetch the topic list from the BlogApiService and assign it to the topicList$ observable.
@@ -188,8 +188,9 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
 
   onFavCheckboxChange(): void {
     this.clearSearchTerm();
-    if (this.isFavChecked) {
-      
+    if (this.isFavChecked) {     
+
+      this.isComChecked = false;
 
       this.apiservice.getTopicList().pipe(
         map(topics => topics.filter(topic => this.favtopicIds.includes(topic.topicId)))
@@ -203,30 +204,21 @@ export class ShowTopicComponent implements OnInit{ // The component class that i
   }
 
   onComCheckboxChange(): void {
-
+    this.clearSearchTerm();
     if (this.isComChecked) {
-      console.log("Comcheckbox is checked")
       
-    } else {
-      console.log("Comcheckbox is unchecked")
+      this.isFavChecked = false;
 
+      this.apiservice.getTopicList().pipe(
+        map(topics => topics.filter(topic => this.comtopicIds.includes(topic.topicId)))
+      ).subscribe(filteredTopics => {
+        this.filteredTopicList$ = of(filteredTopics);
+      });
+      
+    } else {      
+      this.filteredTopicList$ = this.apiservice.getTopicList();
     }
   }
-
-  /*searchByFavouriteTopic() {    
-    this.filteredTopicList$ = this.apiservice.getFavTopicList().pipe(
-      catchError(error => {
-        console.error('Error retrieving favorite topics: ', error);
-        return EMPTY;
-      }),
-      switchMap(topics => {
-        console.log("A searchByFaouriteTopic lefutott")
-        const userFavoriteTopics = topics.filter(topic => topic.userId === this.userId);
-        return of(userFavoriteTopics);
-      })
-    );
-  }*/
-
 
    // Method for open the topic in a new page
   viewTopic(topic: any) {
